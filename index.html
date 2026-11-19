@@ -89,7 +89,13 @@
 
       <!-- Kontrol Audio, Suara, Daftar Halaman & Kuis -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-        <button id="btn-tts" onclick="toggleNarration()" title="Bacakan Cerita dengan Suara"
+        <button id="btn-autoplay" onclick="toggleAutoPlay()" title="Putar Otomatis & Bacakan Cerita Sampai Habis"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-sm transition active:scale-95">
+          <span id="autoplay-icon">▶️</span>
+          <span id="autoplay-label">Putar Otomatis</span>
+        </button>
+
+        <button id="btn-tts" onclick="toggleNarration()" title="Bacakan Cerita Halaman Ini"
           class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition active:scale-95">
           <span id="tts-icon">🔊</span>
           <span id="tts-label" class="hidden sm:inline">Bacakan</span>
@@ -440,6 +446,10 @@
      */
     let currentPageIndex = 0;
     let isSpeaking = false;
+    let isAutoPlaying = false;
+    let autoPlayTimer = null;
+    let speechFallbackTimer = null;
+    let speechSessionId = 0;
     let ambientEnabled = false;
     let audioCtx = null;
     let ambientInterval = null;
@@ -1827,16 +1837,16 @@
                 </div>
               </div>
 
-              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+              <div class="mt-6 flex flex-col sm:flex-row gap-2.5">
                 <button onclick="nextPage()"
-                  class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-base shadow-lg shadow-emerald-600/25 transition transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
+                  class="flex-1 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-600/25 transition transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
                   <span>Mulai Membaca</span>
                   <span>🚀</span>
                 </button>
-                <button onclick="toggleNarration()"
-                  class="py-3.5 px-4 rounded-2xl bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold text-sm transition flex items-center justify-center gap-1.5">
-                  <span>🔊</span>
-                  <span>Dengar</span>
+                <button onclick="startAutoPlayFromCover()"
+                  class="flex-1 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
+                  <span>▶️</span>
+                  <span>Putar Otomatis</span>
                 </button>
               </div>
             </div>
@@ -2076,11 +2086,364 @@
 
     /**
      * ============================================================================
+     * ENGINE AUDIO: TEXT-TO-SPEECH (BAHASA INDONESIA), AUTO-PLAY & EFEK SUARA ALAM
+     * ============================================================================
+     */
+    function initAudioContextSafe() {
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === "suspended") {
+          audioCtx.resume().catch(() => {});
+        }
+      } catch (err) {
+        // Abaikan jika browser membatasi AudioContext
+      }
+    }
+
+    function playChime(type = "page") {
+      try {
+        initAudioContextSafe();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === "success") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.09);
+          osc.frequency.setValueAtTime(783.99, now + 0.18);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } else if (type === "error") {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(165, now + 0.22);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.26);
+        } else {
+          // Efek lembut membalik halaman
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.1);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        }
+      } catch (err) {
+        // Aman tanpa menghentikan alur aplikasi
+      }
+    }
+
+    function toggleAmbientSound() {
+      initAudioContextSafe();
+      ambientEnabled = !ambientEnabled;
+      const icon = document.getElementById("sfx-icon");
+      const label = document.getElementById("sfx-label");
+
+      if (ambientEnabled) {
+        if (icon) icon.textContent = "🌿";
+        if (label) label.textContent = "Alam Aktif";
+        showToast("Efek suara lingkungan sekolah diaktifkan 🐦");
+        startAmbientLoop();
+      } else {
+        if (icon) icon.textContent = "🔇";
+        if (label) label.textContent = "Suara Alam";
+        stopAmbientLoop();
+        showToast("Efek suara lingkungan dimatikan");
+      }
+    }
+
+    function startAmbientLoop() {
+      stopAmbientLoop();
+      const triggerAmbientCue = () => {
+        if (!ambientEnabled) return;
+        try {
+          initAudioContextSafe();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const page = STORY_PAGES[currentPageIndex];
+
+          if (page && page.scene === "flood_rain") {
+            // Efek rintik hujan lembut (filtered noise)
+            const bufferSize = Math.floor(audioCtx.sampleRate * 0.8);
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+              data[i] = (Math.random() * 2 - 1) * 0.15;
+            }
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = "bandpass";
+            filter.frequency.value = 1100;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.005, now + 0.8);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start(now);
+          } else {
+            // Kicauan burung sekolah yang asri
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sine";
+            const baseFreq = 1850 + Math.random() * 650;
+            osc.frequency.setValueAtTime(baseFreq, now);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.28, now + 0.08);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.92, now + 0.18);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.03, now + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.22);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.24);
+          }
+        } catch (err) {
+          // Abaikan error audio minor
+        }
+      };
+
+      triggerAmbientCue();
+      ambientInterval = setInterval(triggerAmbientCue, 2800);
+    }
+
+    function stopAmbientLoop() {
+      if (ambientInterval) {
+        clearInterval(ambientInterval);
+        ambientInterval = null;
+      }
+    }
+
+    function getNarrationTextForPage(page) {
+      if (!page) return "";
+      if (page.type === "cover") {
+        return page.narration;
+      }
+      if (page.type === "reflection") {
+        return `${page.title}. ${page.narration} Pertanyaan pertama: ${page.questions[0].q}. Pertanyaan kedua: ${page.questions[1].q}. Pertanyaan ketiga: ${page.questions[2].q}. Pertanyaan keempat: ${page.questions[3].q}. Pertanyaan kelima: ${page.questions[4].q}. Ayo ikuti juga tantangan Misi 7 Hari Sekolah Bersih!`;
+      }
+      let content = `Halaman ${page.page}. ${page.title}. ${page.text}`;
+      if (page.moralQuote) {
+        content += ` Pesan moral utama: ${page.moralQuote}`;
+      }
+      return content;
+    }
+
+    function updateTtsUi() {
+      const ttsIcon = document.getElementById("tts-icon");
+      const ttsLabel = document.getElementById("tts-label");
+      const autoBtn = document.getElementById("btn-autoplay");
+      const autoIcon = document.getElementById("autoplay-icon");
+      const autoLabel = document.getElementById("autoplay-label");
+
+      if (ttsIcon) ttsIcon.textContent = isSpeaking ? "⏹️" : "🔊";
+      if (ttsLabel) ttsLabel.textContent = isSpeaking ? "Berhenti" : "Bacakan";
+
+      if (autoBtn && autoIcon && autoLabel) {
+        if (isAutoPlaying) {
+          autoBtn.className = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-rose-600 hover:bg-rose-700 text-white shadow-md transition active:scale-95";
+          autoIcon.textContent = "⏹️";
+          autoLabel.textContent = `Stop (Hal ${currentPageIndex + 1}/15)`;
+        } else {
+          autoBtn.className = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-sm transition active:scale-95";
+          autoIcon.textContent = "▶️";
+          autoLabel.textContent = "Putar Otomatis";
+        }
+      }
+    }
+
+    function clearAutoTimers() {
+      if (autoPlayTimer) {
+        clearTimeout(autoPlayTimer);
+        autoPlayTimer = null;
+      }
+      if (speechFallbackTimer) {
+        clearTimeout(speechFallbackTimer);
+        speechFallbackTimer = null;
+      }
+    }
+
+    function stopNarration() {
+      speechSessionId++;
+      clearAutoTimers();
+      isSpeaking = false;
+      try {
+        if ("speechSynthesis" in window && window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (err) {
+        // Abaikan jika speechSynthesis tidak tersedia
+      }
+      updateTtsUi();
+    }
+
+    function stopAutoPlay(silent = false) {
+      isAutoPlaying = false;
+      stopNarration();
+      if (!silent) {
+        showToast("Mode Putar Otomatis dihentikan");
+      }
+    }
+
+    function speakCurrentPage(onCompleteCallback = null) {
+      stopNarration();
+      const page = STORY_PAGES[currentPageIndex];
+      const textToRead = getNarrationTextForPage(page);
+      const currentSession = ++speechSessionId;
+
+      isSpeaking = true;
+      updateTtsUi();
+
+      const handleSpeechFinished = () => {
+        if (currentSession !== speechSessionId) return;
+        clearAutoTimers();
+        isSpeaking = false;
+        updateTtsUi();
+        if (typeof onCompleteCallback === "function") {
+          onCompleteCallback();
+        }
+      };
+
+      // Estimasi durasi baca cerdas sebagai fallback jika TTS tidak tersedia / macet
+      const wordCount = textToRead.split(/\s+/).filter(Boolean).length;
+      const estimatedMs = Math.max(4500, Math.min(28000, wordCount * 430 + 1800));
+
+      try {
+        if ("speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined") {
+          const utterance = new SpeechSynthesisUtterance(textToRead);
+          utterance.lang = "id-ID";
+          utterance.rate = 0.96;
+          utterance.pitch = 1.04;
+
+          const voices = window.speechSynthesis.getVoices();
+          const indoVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes("id"));
+          if (indoVoice) {
+            utterance.voice = indoVoice;
+          }
+
+          utterance.onend = () => handleSpeechFinished();
+          utterance.onerror = () => handleSpeechFinished();
+
+          // Fallback timer berjaga jika event onend tidak terpicu di browser tertentu
+          speechFallbackTimer = setTimeout(() => {
+            handleSpeechFinished();
+          }, estimatedMs + 3500);
+
+          window.speechSynthesis.speak(utterance);
+        } else {
+          // Perangkat tanpa Web Speech API tetap menjalankan auto-read dengan durasi baca alami
+          speechFallbackTimer = setTimeout(() => {
+            handleSpeechFinished();
+          }, estimatedMs);
+        }
+      } catch (err) {
+        speechFallbackTimer = setTimeout(() => {
+          handleSpeechFinished();
+        }, estimatedMs);
+      }
+    }
+
+    function toggleNarration() {
+      initAudioContextSafe();
+      if (isAutoPlaying) {
+        stopAutoPlay();
+        return;
+      }
+      if (isSpeaking) {
+        stopNarration();
+      } else {
+        speakCurrentPage();
+      }
+    }
+
+    function runAutoPlayStep() {
+      if (!isAutoPlaying) return;
+      updateTtsUi();
+
+      speakCurrentPage(() => {
+        if (!isAutoPlaying) return;
+        if (currentPageIndex < STORY_PAGES.length - 1) {
+          autoPlayTimer = setTimeout(() => {
+            if (!isAutoPlaying) return;
+            currentPageIndex++;
+            playChime("page");
+            renderCurrentPage();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            runAutoPlayStep();
+          }, 1200);
+        } else {
+          // Sampai di halaman terakhir (Halaman 15)
+          isAutoPlaying = false;
+          updateTtsUi();
+          playChime("success");
+          showToast("🎉 Cerita selesai dibacakan sampai halaman akhir!");
+        }
+      });
+    }
+
+    function toggleAutoPlay() {
+      initAudioContextSafe();
+      if (isAutoPlaying) {
+        stopAutoPlay();
+        return;
+      }
+
+      // Aktifkan juga suara alam jika belum aktif agar pengalaman bercerita semakin hidup
+      if (!ambientEnabled) {
+        ambientEnabled = true;
+        const icon = document.getElementById("sfx-icon");
+        const label = document.getElementById("sfx-label");
+        if (icon) icon.textContent = "🌿";
+        if (label) label.textContent = "Alam Aktif";
+        startAmbientLoop();
+      }
+
+      isAutoPlaying = true;
+      showToast(`▶️ Memutar otomatis dari Halaman ${currentPageIndex + 1} sampai selesai...`);
+      runAutoPlayStep();
+    }
+
+    function startAutoPlayFromCover() {
+      initAudioContextSafe();
+      if (!ambientEnabled) {
+        ambientEnabled = true;
+        const icon = document.getElementById("sfx-icon");
+        const label = document.getElementById("sfx-label");
+        if (icon) icon.textContent = "🌿";
+        if (label) label.textContent = "Alam Aktif";
+        startAmbientLoop();
+      }
+      isAutoPlaying = true;
+      showToast("▶️ Memulai cerita & pembacaan otomatis dari Halaman 1 sampai 15...");
+      runAutoPlayStep();
+    }
+
+    /**
+     * ============================================================================
      * NAVIGASI HALAMAN, DAFTAR ISI & REFLEKSI
      * ============================================================================
      */
-    function goToPage(index) {
+    function goToPage(index, keepAutoPlay = false) {
       if (index < 0 || index >= STORY_PAGES.length) return;
+      if (!keepAutoPlay && isAutoPlaying) {
+        isAutoPlaying = false;
+      }
       stopNarration();
       currentPageIndex = index;
       playChime("page");
