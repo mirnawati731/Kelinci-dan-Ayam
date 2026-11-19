@@ -4,340 +4,2282 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Petualangan Ayam Hitam dan Kelinci Putih: Misi Menyelamatkan Sekolahku</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --sky-top: #38bdf8;
-      --sky-bottom: #bae6fd;
-      --leaf-dark: #15803d;
-      --leaf-mid: #22c55e;
-      --leaf-light: #86efac;
-      --sun-gold: #facc15;
-      --card-bg: #ffffff;
-      --ink-main: #1e293b;
-      --ink-soft: #475569;
-      --accent-orange: #f97316;
-      --accent-blue: #0284c7;
-      --shadow-3d: 0 22px 45px -12px rgba(15, 23, 42, 0.25), 0 8px 16px -6px rgba(15, 23, 42, 0.12);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --font-display: 'Fredoka', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #dcfce7 0%, #e0f2fe 50%, #fef9c3 100%);
-      color: var(--ink-main);
+      font-family: var(--font-body);
+      background: radial-gradient(circle at top left, #dcfce7 0%, #e0f2fe 50%, #fef9c3 100%);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px 20px;
       overflow-x: hidden;
+      color: #1e293b;
     }
 
-    /* TOP BAR */
-    .topbar {
-      width: 100%;
-      max-width: 1120px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      padding: 10px 18px;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-      border: 2px solid #bbf7d0;
-      margin-bottom: 12px;
+    h1, h2, h3, .font-display {
+      font-family: var(--font-display);
     }
 
-    .brand-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #22c55e, #0ea5e9);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-family: 'Fredoka', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 10px rgba(34, 197, 94, 0.35);
-    }
-
-    .brand-text h1 {
-      font-family: 'Fredoka', sans-serif;
-      font-size: 1rem;
-      color: #0f172a;
-      line-height: 1.2;
-    }
-
-    .brand-text span {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #15803d;
-    }
-
-    .audio-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-pill {
-      border: none;
-      border-radius: 999px;
-      padding: 8px 15px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.12);
-    }
-
-    .btn-pill:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.12);
-    }
-
-    .btn-tts {
-      background: #0284c7;
-      color: #fff;
-    }
-    .btn-tts.speaking {
-      background: #ef4444;
-      animation: pulseGlow 1.3s infinite;
-    }
-
-    .btn-ambient {
-      background: #16a34a;
-      color: #fff;
-    }
-    .btn-ambient.muted {
-      background: #94a3b8;
-    }
-
-    .btn-toc {
-      background: #f59e0b;
-      color: #fff;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-    }
-
-    /* BOOK STAGE */
-    .book-wrapper {
-      width: 100%;
-      max-width: 1120px;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @keyframes pageTurnIn {
+      0% { opacity: 0; transform: perspective(1200px) rotateY(-4deg) scale(0.985); }
+      100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) scale(1); }
     }
 
     .book-card {
-      width: 100%;
-      background: var(--card-bg);
-      border-radius: 28px;
-      box-shadow: var(--shadow-3d);
-      border: 4px solid #ffffff;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      min-height: 540px;
-      position: relative;
-      transition: transform 0.35s ease, opacity 0.35s ease;
+      box-shadow:
+        0 25px 50px -12px rgba(15, 23, 42, 0.22),
+        0 0 0 1px rgba(255, 255, 255, 0.85),
+        inset 0 2px 10px rgba(255, 255, 255, 0.9);
+      animation: pageTurnIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .book-card.cover-mode {
-      grid-template-columns: 1fr;
+    .book-spine-shadow {
+      background: linear-gradient(90deg, rgba(15,23,42,0.06) 0%, rgba(15,23,42,0) 8%, rgba(15,23,42,0) 92%, rgba(15,23,42,0.05) 100%);
     }
 
-    .book-card.flip-anim {
-      animation: pageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    @keyframes pageEnter {
-      0% { opacity: 0.35; transform: scale(0.98) translateY(8px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    /* ILLUSTRATION PANEL (3D SVG STAGE) */
-    .illustration-pane {
-      position: relative;
-      background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 62%, #4ade80 62%, #16a34a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      min-height: 360px;
-    }
-
-    .illustration-pane svg {
+    .scene-canvas {
+      display: block;
       width: 100%;
       height: 100%;
-      max-height: 560px;
-      display: block;
     }
 
-    .page-ribbon {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      background: rgba(15, 23, 42, 0.78);
-      color: #fff;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 0.88rem;
-      padding: 6px 14px;
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
       border-radius: 999px;
-      backdrop-filter: blur(6px);
-      z-index: 5;
-      letter-spacing: 0.3px;
     }
-
-    /* STORY TEXT PANEL */
-    .story-pane {
-      padding: 32px 34px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: radial-gradient(circle at top right, #f0fdf4 0%, #ffffff 55%);
-      border-left: 3px dashed #e2e8f0;
-    }
-
-    .chapter-tag {
-      display: inline-block;
-      align-self: flex-start;
-      background: #dcfce7;
-      color: #15803d;
-      font-weight: 800;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 5px 12px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .story-title {
-      font-family: 'Fredoka', sans-serif;
-      font-size: 1.65rem;
-      color: #0f172a;
-      line-height: 1.25;
-      margin-bottom: 16px;
-    }
-
-    .story-body {
-      font-size: 1.18rem;
-      line-height: 1.78;
-      color: #1e293b;
-      font-weight: 600;
-    }
-
-    .story-body p + p {
-      margin-top: 12px;
-    }
-
-    .moral-callout {
-      margin-top: 18px;
-      background: linear-gradient(135deg, #fef9c3, #dcfce7);
-      border-left: 6px solid #16a34a;
-      padding: 16px 18px;
-      border-radius: 14px;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 1.08rem;
-      color: #14532d;
-      line-height: 1.45;
-      box-shadow: 0 6px 15px rgba(22, 163, 74, 0.12);
-    }
-
-    /* CHARACTER ANIMATIONS */
-    @keyframes charBob {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-    }
-    @keyframes earWiggle {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(5deg); }
-    }
-    @keyframes cloudDrift {
-      0% { transform: translateX(-15px); }
-      50% { transform: translateX(15px); }
-      100% { transform: translateX(-15px); }
-    }
-    @keyframes rainFall {
-      0% { transform: translateY(-20px); opacity: 0.2; }
-      50% { opacity: 0.85; }
-      100% { transform: translateY(35px); opacity: 0; }
-    }
-
-    .anim-bob {
-      animation: charBob 2.6s ease-in-out infinite;
-    }
-    .anim-bob-delay {
-      animation: charBob 2.9s ease-in-out 0.6s infinite;
-    }
-    .anim-cloud {
-      animation: cloudDrift 9s ease-in-out infinite;
-    }
-    .anim-rain {
-      animation: rainFall 1.1s linear infinite;
-    }
-
-    /* COVER OVERLAY */
-    .cover-layout {
-      position: relative;
-      width: 100%;
-      min-height: 550px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      text-align: center;
-      padding: 28px 24px 24px;
-      background: linear-gradient(180deg, #0284c7 0%, #38bdf8 45%, #86efac 78%, #15803d 100%);
-    }
-
-    .cover-header {
-      z-index: 4;
-      max-width: 820px;
-    }
-
-    .cover-school-pill {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0369a1;
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 6px 18px;
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
       border-radius: 999px;
-      letter-spacing: 0.8px;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="flex flex-col justify-between selection:bg-emerald-200 selection:text-emerald-900">
+
+  <!-- HEADER / TOOLBAR INTERAKTIF -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-emerald-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <!-- Identitas Mini -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md font-display font-bold text-lg">
+          📖
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 leading-tight">
+            SMP Negeri Satu Atap 3 Kalianda
+          </p>
+          <h1 class="text-xs sm:text-sm font-bold text-slate-800 line-clamp-1">
+            Petualangan Ayam Hitam &amp; Kelinci Putih
+          </h1>
+        </div>
+      </div>
+
+      <!-- Kontrol Audio, Suara, Daftar Halaman & Kuis -->
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        <button id="btn-tts" onclick="toggleNarration()" title="Bacakan Cerita dengan Suara"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition active:scale-95">
+          <span id="tts-icon">🔊</span>
+          <span id="tts-label" class="hidden sm:inline">Bacakan</span>
+        </button>
+
+        <button id="btn-sfx" onclick="toggleAmbientSound()" title="Efek Suara Lingkungan Sekolah"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition active:scale-95">
+          <span id="sfx-icon">🔇</span>
+          <span id="sfx-label" class="hidden md:inline">Suara Alam</span>
+        </button>
+
+        <button onclick="openTocModal()" title="Daftar Isi Halaman"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition active:scale-95">
+          <span>📑</span>
+          <span id="page-badge">Hal 1 / 15</span>
+        </button>
+
+        <button onclick="openQuizModal()" title="Kuis Interaktif Lingkungan"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-sm transition active:scale-95">
+          <span>🎯</span>
+          <span>Kuis</span>
+        </button>
+      </div>
+    </div>
+    <!-- Progress Bar Membaca -->
+    <div class="w-full h-1.5 bg-slate-100">
+      <div id="reading-progress" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-sky-500 transition-all duration-500" style="width: 6.66%"></div>
+    </div>
+  </header>
+
+  <!-- AREA UTAMA BUKU CERITA DIGITAL -->
+  <main class="flex-1 flex items-center justify-center px-3 sm:px-6 py-4 sm:py-6">
+    <div id="storybook-stage" class="w-full max-w-6xl">
+      <!-- Konten Halaman Dirender Dinamis oleh JavaScript -->
+    </div>
+  </main>
+
+  <!-- NAVIGASI BAWAH HALAMAN -->
+  <footer class="sticky bottom-0 z-30 bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 px-4">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+      <button id="btn-prev" onclick="prevPage()"
+        class="flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-2xl font-bold text-sm sm:text-base bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition shadow-sm active:scale-95">
+        <span>⬅️</span>
+        <span>Sebelumnya</span>
+      </button>
+
+      <!-- Titik Indikator Halaman (Desktop) -->
+      <div id="page-dots" class="hidden md:flex items-center gap-1.5"></div>
+
+      <div class="md:hidden text-xs font-extrabold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">
+        Halaman <span id="mobile-page-num">1</span> dari 15
+      </div>
+
+      <button id="btn-next" onclick="nextPage()"
+        class="flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white disabled:opacity-40 disabled:pointer-events-none transition shadow-md active:scale-95">
+        <span id="btn-next-text">Berikutnya</span>
+        <span>➡️</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- MODAL DAFTAR ISI (TABLE OF CONTENTS) -->
+  <div id="toc-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="px-6 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold">📑 Daftar Halaman Storybook</h3>
+          <p class="text-xs text-emerald-100">Pilih halaman untuk langsung melompat ke bagian cerita</p>
+        </div>
+        <button onclick="closeTocModal()" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center font-bold text-lg">✕</button>
+      </div>
+      <div id="toc-list" class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <!-- Daftar halaman diisi JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KUIS INTERAKTIF -->
+  <div id="quiz-modal" class="fixed inset-0 z-50 hidden bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-indigo-100 overflow-hidden">
+      <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold">🎯 Kuis Cerdas Peduli Lingkungan</h3>
+          <p class="text-xs text-indigo-100">Uji pemahamanmu tentang cerita Ayam Hitam &amp; Kelinci Putih</p>
+        </div>
+        <button onclick="closeQuizModal()" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center font-bold text-lg">✕</button>
+      </div>
+      <div id="quiz-content" class="p-6 overflow-y-auto">
+        <!-- Konten Kuis diisi JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFIKASI TOAST (PENGGANTI ALERT) -->
+  <div id="toast-box" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300">
+    <div id="toast-msg" class="bg-slate-900/90 text-white text-sm font-semibold px-5 py-2.5 rounded-2xl shadow-xl border border-white/15">
+      Pesan notifikasi
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * DATA LENGKAP 15 HALAMAN STORYBOOK DIGITAL INTERAKTIF
+     * Judul: PETUALANGAN AYAM HITAM DAN KELINCI PUTIH: MISI MENYELAMATKAN SEKOLAHKU
+     * Disusun oleh: Mirnawati, S.Pd. - SMP NEGERI SATU ATAP 3 KALIANDA
+     * ============================================================================
+     */
+    const STORY_PAGES = [
+      {
+        page: 1,
+        type: "cover",
+        badge: "HALAMAN 1 • SAMPUL",
+        title: "PETUALANGAN AYAM HITAM DAN KELINCI PUTIH",
+        subtitle: "Misi Menyelamatkan Sekolahku",
+        author: "Mirnawati, S.Pd.",
+        school: "SMP NEGERI SATU ATAP 3 KALIANDA",
+        target: "Media Pembelajaran Pendidikan Karakter • Siswa SMP Kelas VII, VIII, dan IX",
+        narration: "Petualangan Ayam Hitam dan Kelinci Putih: Misi Menyelamatkan Sekolahku. Disusun oleh Mirnawati, Sarjana Pendidikan, dari SMP Negeri Satu Atap 3 Kalianda.",
+        scene: "cover"
+      },
+      {
+        page: 2,
+        type: "story",
+        badge: "HALAMAN 2 • PENGENALAN",
+        title: "Sekolah yang Indah",
+        text: "Di kaki perbukitan yang sejuk, berdirilah SMP Negeri Satu Atap 3 Kalianda yang asri, rindang, dan bersih. Pepohonan hijau tumbuh subur, sementara taman bunga bermekaran di depan ruang kelas. Di sekolah yang nyaman inilah bersahabat dua siswa istimewa, yaitu Ayam Hitam yang ceria dan Kelinci Putih yang rajin serta sangat menyayangi lingkungan.",
+        moralTag: "🌱 Lingkungan bersih membuat belajar menjadi nyaman",
+        scene: "beautiful_school"
+      },
+      {
+        page: 3,
+        type: "story",
+        badge: "HALAMAN 3 • AWAL MASALAH",
+        title: "Kebiasaan Buruk Ayam Hitam",
+        text: "Saat jam istirahat berbunyi, Ayam Hitam berjalan riang menuju kantin untuk membeli jajanan kesukaannya. Setelah makanan itu habis, ia dengan santai membuang bungkus plastiknya begitu saja ke halaman sekolah. Padahal, tempat sampah organik dan anorganik sudah tersedia hanya beberapa langkah di dekatnya. Baginya, satu bungkus kecil tidak akan merusak keindahan sekolah.",
+        moralTag: "⚠️ Kebiasaan kecil yang keliru dapat berdampak besar",
+        scene: "littering"
+      },
+      {
+        page: 4,
+        type: "story",
+        badge: "HALAMAN 4 • NASIHAT SAHABAT",
+        title: "Kelinci Putih Memberi Nasihat",
+        text: "Kelinci Putih yang kebetulan melintas melihat perbuatan sahabatnya itu. Dengan ramah dan penuh kesabaran, ia menghampiri Ayam Hitam sambil mengingatkan agar sampah dibuang ke tempat sampah. Namun, Ayam Hitam justru tertawa kecil dan mengibaskan sayapnya. Ia menganggap nasihat Kelinci Putih terlalu berlebihan karena merasa petugas kebersihan pasti akan menyapunya nanti.",
+        moralTag: "💬 Mengingatkan teman dengan santun adalah wujud kepedulian",
+        scene: "advising"
+      },
+      {
+        page: 5,
+        type: "story",
+        badge: "HALAMAN 5 • KONFLIK",
+        title: "Lingkungan Sekolah Mulai Kotor",
+        text: "Hari demi hari berlalu, kebiasaan buruk Ayam Hitam mulai ditiru beberapa siswa lain. Sampah plastik, gelas minuman, dan daun kering menumpuk di halaman, sudut kelas, hingga menutupi bunga-bunga indah di taman. Lebih parah lagi, saluran air atau selokan di pinggir lapangan mulai tersumbat tumpukan sampah, sehingga lingkungan sekolah tampak kumuh dan tidak nyaman.",
+        moralTag: "🥀 Sampah yang menumpuk merusak keindahan dan kesehatan",
+        scene: "dirty_school"
+      },
+      {
+        page: 6,
+        type: "story",
+        badge: "HALAMAN 6 • PUNCAK MASALAH",
+        title: "Masalah Besar Datang",
+        text: "Siang itu, langit tiba-tiba berubah mendung dan hujan deras pun mengguyur sekolah. Karena selokan tersumbat sampah plastik, air hujan tidak dapat mengalir dengan lancar. Air meluap menggenangi seluruh halaman dan lapangan upacara. Semua siswa merasa terganggu, kegiatan belajar terhambat, dan sepatu mereka basah kuyup saat hendak pulang.",
+        moralTag: "🌧️ Selokan tersumbat sampah menjadi penyebab banjir di sekolah",
+        scene: "flood_rain"
+      },
+      {
+        page: 7,
+        type: "story",
+        badge: "HALAMAN 7 • KESADARAN DIRI",
+        title: "Ayam Hitam Menyadari Kesalahan",
+        text: "Ayam Hitam berdiri termenung di teras kelas sambil menatap halaman sekolah yang tergenang air keruh. Wajahnya tampak sedih dan penuh penyesalan. Ia teringat bungkus makanan yang selama ini ia buang sembarangan. Kini ia sadar bahwa kebiasaan kecil yang dianggap sepele ternyata mampu menimbulkan bencana besar bagi seluruh warga sekolah.",
+        moralTag: "💡 Mengakui kesalahan adalah langkah awal menuju perubahan",
+        scene: "regret"
+      },
+      {
+        page: 8,
+        type: "story",
+        badge: "HALAMAN 8 • TITIK BALIK",
+        title: "Ajakan untuk Berubah",
+        text: "Melihat sahabatnya bersedih, Kelinci Putih mendekat dan menepuk bahu Ayam Hitam dengan hangat. Ia tidak menyalahkan, melainkan mengajak Ayam Hitam bangkit memperbaiki keadaan. Mereka berdua sepakat meluncurkan misi menyelamatkan sekolah dan segera mengajak teman-teman kelas tujuh, delapan, dan sembilan untuk ikut bergerak bersama.",
+        moralTag: "🤝 Sahabat sejati mengajak bangkit dan berbuat kebaikan",
+        scene: "invitation"
+      },
+      {
+        page: 9,
+        type: "story",
+        badge: "HALAMAN 9 • EDUKASI & AKSI",
+        title: "Misi Memilah Sampah",
+        text: "Sebelum membersihkan sekolah, Kelinci Putih menjelaskan cara memilah sampah dengan benar kepada Ayam Hitam dan teman-teman. Sampah organik seperti daun kering dan sisa makanan dimasukkan ke tempat sampah berwarna hijau agar dapat diolah menjadi kompos. Sementara itu, sampah anorganik seperti plastik dan bungkus jajanan dimasukkan ke tempat sampah kuning untuk didaur ulang.",
+        moralTag: "♻️ Pilah sampah organik (hijau) dan anorganik (kuning) dengan tepat",
+        scene: "sorting_game",
+        interactiveSorting: true
+      },
+      {
+        page: 10,
+        type: "story",
+        badge: "HALAMAN 10 • GOTONG ROYONG",
+        title: "Gotong Royong Membersihkan Sekolah",
+        text: "Dengan penuh semangat kebersamaan, Ayam Hitam, Kelinci Putih, dan seluruh siswa bergotong royong membersihkan setiap sudut sekolah. Sebagian menyapu halaman dan merapikan taman bunga, sementara kelompok lain memakai sarung tangan untuk mengangkat sampah dari selokan dengan aman. Pekerjaan berat terasa ringan karena dikerjakan bersama dengan hati gembira.",
+        moralTag: "🧹 Gotong royong membuat pekerjaan berat menjadi ringan",
+        scene: "gotong_royong"
+      },
+      {
+        page: 11,
+        type: "story",
+        badge: "HALAMAN 11 • PENYELESAIAN",
+        title: "Sekolah Kembali Asri",
+        text: "Setelah bekerja keras bersama, wajah SMP Negeri Satu Atap 3 Kalianda kembali berseri. Halaman sekolah tampak bersih tanpa sampah berserakan, bunga-bunga di taman kembali bermekaran indah, dan air jernih mengalir lancar di dalam selokan. Udara terasa segar, dan seluruh siswa bersorak gembira menyambut sekolah kebanggaan mereka yang kembali asri.",
+        moralTag: "🌸 Lingkungan yang dirawat akan memberikan kenyamanan bagi semua",
+        scene: "clean_again"
+      },
+      {
+        page: 12,
+        type: "story",
+        badge: "HALAMAN 12 • KETELADANAN",
+        title: "Ayam Hitam Menjadi Teladan",
+        text: "Sejak peristiwa itu, Ayam Hitam berubah menjadi siswa yang sangat disiplin dan peduli terhadap kebersihan. Ia selalu membawa botol minum sendiri untuk mengurangi sampah plastik. Bahkan, dengan ramah dan penuh senyum, Ayam Hitam kini aktif mengingatkan teman-temannya agar selalu membuang sampah pada tempatnya demi menjaga lingkungan sekolah.",
+        moralTag: "⭐ Perubahan diri yang baik akan menginspirasi orang lain",
+        scene: "role_model"
+      },
+      {
+        page: 13,
+        type: "story",
+        badge: "HALAMAN 13 • KOMITMEN BERSAMA",
+        title: "Janji Bersama",
+        text: "Pada upacara pagi hari Senin, seluruh siswa berkumpul di lapangan untuk mengucapkan janji bersama menjaga kebersihan sekolah setiap hari. Mereka berkomitmen melaksanakan piket kelas dengan penuh tanggung jawab, mengurangi penggunaan plastik sekali pakai, serta merawat tanaman di sekitar kelas agar sekolah tetap hijau sepanjang waktu.",
+        moralTag: "📜 Disiplin dan tanggung jawab menjaga kelestarian lingkungan",
+        scene: "pledge"
+      },
+      {
+        page: 14,
+        type: "story",
+        badge: "HALAMAN 14 • PENUTUP & PESAN MORAL",
+        title: "Pesan Moral untuk Kita Semua",
+        text: "Ayam Hitam dan Kelinci Putih tersenyum bahagia berdiri di tengah halaman sekolah yang bersih, hijau, dan nyaman. Petualangan mereka mengajarkan bahwa menjaga kebersihan bukan tugas satu orang saja, melainkan tanggung jawab seluruh warga sekolah yang mencintai tempat belajarnya.",
+        moralQuote: "“SEKOLAH BERSIH BUKAN KARENA ADA PETUGAS KEBERSIHAN, TETAPI KARENA KITA SEMUA MEMILIKI KEPEDULIAN.”",
+        scene: "moral_ending"
+      },
+      {
+        page: 15,
+        type: "reflection",
+        badge: "HALAMAN 15 • REFLEKSI & TANTANGAN",
+        title: "Refleksi Diri & Misi 7 Hari Sekolah Bersih",
+        narration: "Halaman Refleksi dan Tantangan. Jawablah lima pertanyaan refleksi berikut dan ikuti tantangan Misi Tujuh Hari Sekolah Bersih!",
+        questions: [
+          {
+            q: "1. Apa kebiasaan buruk Ayam Hitam pada awal cerita?",
+            hint: "Ayam Hitam suka membuang bungkus makanan sembarangan di halaman sekolah setelah jajan di kantin."
+          },
+          {
+            q: "2. Mengapa sampah yang dibuang sembarangan dapat menyebabkan banjir?",
+            hint: "Sampah yang menumpuk terbawa ke saluran air (selokan) dan menyumbat aliran air hujan sehingga air meluap ke halaman."
+          },
+          {
+            q: "3. Apa perbedaan sampah organik dan anorganik?",
+            hint: "Sampah organik mudah terurai alami (daun kering, sisa makanan), sedangkan sampah anorganik sulit terurai (plastik, kaleng, bungkus makanan)."
+          },
+          {
+            q: "4. Sikap baik apa yang ditunjukkan Kelinci Putih?",
+            hint: "Kelinci Putih peduli lingkungan, sabar, santun saat menasihati tanpa menghakimi, serta mau mengajak bergotong royong."
+          },
+          {
+            q: "5. Apa tindakan nyata yang akan kamu lakukan untuk menjaga kebersihan sekolah?",
+            hint: "Membuang sampah sesuai jenisnya, melaksanakan piket kelas, mengurangi plastik sekali pakai, dan merawat tanaman sekolah."
+          }
+        ],
+        missionDays: [
+          { day: "Hari 1", task: "Membuang sampah pada tempat sampah organik & anorganik" },
+          { day: "Hari 2", task: "Membawa tumbler / botol minum sendiri dari rumah" },
+          { day: "Hari 3", task: "Melaksanakan piket kelas dengan penuh tanggung jawab" },
+          { day: "Hari 4", task: "Memungut minimal 3 sampah yang terlihat di halaman" },
+          { day: "Hari 5", task: "Menyiram dan merawat tanaman di depan ruang kelas" },
+          { day: "Hari 6", task: "Mengingatkan teman dengan ramah untuk menjaga kebersihan" },
+          { day: "Hari 7", task: "Membersihkan laci meja dan area sekitar tempat duduk" }
+        ],
+        scene: "reflection"
+      }
+    ];
+
+    /**
+     * ============================================================================
+     * DATA KUIS INTERAKTIF SISWA SMP
+     * ============================================================================
+     */
+    const QUIZ_QUESTIONS = [
+      {
+        question: "Di mana latar sekolah tempat Ayam Hitam dan Kelinci Putih menuntut ilmu?",
+        options: [
+          "SMP Negeri Satu Atap 3 Kalianda",
+          "SD Negeri 1 Kalianda",
+          "SMA Negeri 3 Lampung",
+          "SMP Negeri 1 Bandar Lampung"
+        ],
+        correct: 0,
+        explanation: "Tepat sekali! Cerita ini berlatar di SMP Negeri Satu Atap 3 Kalianda yang asri dan hijau."
+      },
+      {
+        question: "Apa akibat langsung dari kebiasaan membuang sampah sembarangan ketika hujan deras turun dalam cerita?",
+        options: [
+          "Taman bunga menjadi semakin subur",
+          "Selokan tersumbat sampah sehingga halaman sekolah tergenang air",
+          "Kantin sekolah tutup lebih awal",
+          "Pepohonan di halaman menjadi tumbang"
+        ],
+        correct: 1,
+        explanation: "Benar! Sampah menyumbat saluran air (selokan) sehingga air hujan meluap dan menggenangi halaman."
+      },
+      {
+        question: "Manakah kelompok sampah yang harus dimasukkan ke tempat sampah ORGANIK (berwarna hijau)?",
+        options: [
+          "Botol plastik dan sedotan",
+          "Bungkus makanan ringan dan kaleng minuman",
+          "Daun kering dan sisa makanan",
+          "Pecahan kaca dan styrofoam"
+        ],
+        correct: 2,
+        explanation: "Hebat! Daun kering dan sisa makanan adalah sampah organik yang mudah terurai menjadi kompos."
+      },
+      {
+        question: "Bagaimana cara Kelinci Putih mengingatkan Ayam Hitam saat berbuat salah?",
+        options: [
+          "Memarahinya di depan semua teman",
+          "Mengingatkan dengan ramah, sabar, dan tidak menghakimi",
+          "Melaporkannya agar dihukum berat",
+          "Membiarkannya saja karena takut bertengkar"
+        ],
+        correct: 1,
+        explanation: "Betul! Kelinci Putih menunjukkan karakter santun, sabar, dan bersahabat saat memberi nasihat."
+      },
+      {
+        question: "Apa pesan moral utama yang terdapat pada Halaman 14 storybook ini?",
+        options: [
+          "Kebersihan sekolah adalah tanggung jawab petugas kebersihan saja",
+          "Membuang satu sampah kecil tidak akan memengaruhi lingkungan",
+          "Sekolah bersih bukan karena ada petugas kebersihan, tetapi karena kita semua memiliki kepedulian",
+          "Hujan adalah penyebab utama sekolah menjadi kotor"
+        ],
+        correct: 2,
+        explanation: "Luar biasa! Kepedulian dan tanggung jawab seluruh warga sekolah adalah kunci sekolah tetap bersih."
+      }
+    ];
+
+    /**
+     * ============================================================================
+     * STATE APLIKASI
+     * ============================================================================
+     */
+    let currentPageIndex = 0;
+    let isSpeaking = false;
+    let ambientEnabled = false;
+    let audioCtx = null;
+    let ambientInterval = null;
+    let sceneAnimFrameId = null;
+
+    // State Mini-Game Pilah Sampah (Halaman 9)
+    let sortedItems = { leaf: false, plastic: false, banana: false, bottle: false };
+
+    // State Misi 7 Hari & Refleksi (Halaman 15)
+    let missionProgress = [false, false, false, false, false, false, false];
+    let studentName = "";
+    let revealedHints = {};
+
+    // State Kuis
+    let quizAnswers = {};
+    let quizSubmitted = false;
+
+    /**
+     * ============================================================================
+     * ENGINE ILUSTRASI FOTOREALISTIK / 3D CINEMATIC REALISM (HIGH-DPI HTML5 CANVAS)
+     * Menampilkan Ayam Jantan Hitam Legam & Kelinci Putih Sungguhan serta
+     * Lingkungan Sekolah SMP Negeri Satu Atap 3 Kalianda yang Realistis
+     * ============================================================================
+     */
+
+    // Helper: Gambar Lingkaran/Elips Bertekstur Halus & Pencahayaan Realistis
+    function drawShadedEllipse(ctx, cx, cy, rx, ry, rot, stops) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rot);
+      const grad = ctx.createRadialGradient(-rx * 0.28, -ry * 0.32, rx * 0.05, 0, 0, Math.max(rx, ry));
+      stops.forEach(([offset, color]) => grad.addColorStop(offset, color));
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     }
 
-    .cover-main-title {
-      font-family: 'Fredoka', sans-serif;
-      font-size: clamp(1.75rem, 3.6vw
+    // Helper: Tekstur Helai Bulu Halus (Fur / Feather Strands)
+    function drawHairStrands(ctx, cx, cy, rx, ry, count, color, alpha = 0.25, len = 7) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = 0.9;
+      ctx.lineCap = "round";
+      for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2;
+        const rRatio = 0.35 + ((i * 37) % 60) / 100;
+        const sx = cx + Math.cos(angle) * rx * rRatio;
+        const sy = cy + Math.sin(angle) * ry * rRatio;
+        const dirAngle = angle + Math.sin(i) * 0.3;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(sx + Math.cos(dirAngle) * len, sy + Math.sin(dirAngle) * len);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    /**
+     * RENDER AYAM JANTAN HITAM SUNGGUHAN (PHOTOREALISTIC ROOSTER)
+     * Konsisten bentuk, proporsi, bulu hitam berkilau iridescent hijau-ungu,
+     * jengger merah bertekstur alami, paruh keratin kuning-tanduk, dan ekspresi hidup.
+     */
+    function renderRealisticRooster(ctx, x, y, scale, time, mood = "happy", flip = false) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(flip ? -scale : scale, scale);
+
+      // Gerak napas & mikro-ekspresi alami
+      const breath = Math.sin(time * 3.2) * 1.6;
+      const headBob =
+        mood === "laugh" ? Math.sin(time * 12) * 3.5 :
+        mood === "sad" ? 6 + Math.sin(time * 2) * 1 :
+        mood === "work" ? Math.sin(time * 6) * 3 :
+        Math.sin(time * 2.6 + 0.5) * 2;
+      const headTilt =
+        mood === "sad" ? 0.16 :
+        mood === "laugh" ? -0.12 + Math.sin(time * 12) * 0.06 :
+        mood === "advise" ? -0.05 : 0;
+
+      // 1. Contact Shadow (Bayangan lembut di paving/tanah)
+      const shadowGrad = ctx.createRadialGradient(0, 66, 4, 0, 66, 56);
+      shadowGrad.addColorStop(0, "rgba(15, 23, 42, 0.45)");
+      shadowGrad.addColorStop(0.65, "rgba(15, 23, 42, 0.18)");
+      shadowGrad.addColorStop(1, "rgba(15, 23, 42, 0)");
+      ctx.fillStyle = shadowGrad;
+      ctx.beginPath();
+      ctx.ellipse(0, 66, 56, 13, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Kaki Bersisik Kuning Keemasan & Cakar Realistis
+      const drawLeg = (lx, ly, angleOffset) => {
+        ctx.save();
+        ctx.translate(lx, ly);
+        ctx.rotate(angleOffset);
+        // Paha berbulu
+        drawShadedEllipse(ctx, 0, 4, 11, 14, 0, [
+          [0, "#1e293b"],
+          [1, "#020617"]
+        ]);
+        // Betis bersisik kuning tanduk
+        const legGrad = ctx.createLinearGradient(-4, 14, 4, 46);
+        legGrad.addColorStop(0, "#d97706");
+        legGrad.addColorStop(0.5, "#f59e0b");
+        legGrad.addColorStop(1, "#b45309");
+        ctx.strokeStyle = legGrad;
+        ctx.lineWidth = 5.5;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(0, 14);
+        ctx.lineTo(-2, 44);
+        ctx.stroke();
+
+        // Sisik kaki
+        ctx.strokeStyle = "rgba(120, 53, 15, 0.45)";
+        ctx.lineWidth = 1;
+        for (let sy = 19; sy <= 40; sy += 4.5) {
+          ctx.beginPath();
+          ctx.moveTo(-4, sy);
+          ctx.lineTo(1, sy);
+          ctx.stroke();
+        }
+
+        // Jari & cakar menyentuh tanah
+        ctx.strokeStyle = "#d97706";
+        ctx.lineWidth = 3.6;
+        [
+          [-2, 44, -15, 48],
+          [-2, 44, 14, 49],
+          [-2, 44, 19, 46]
+        ].forEach(([x1, y1, x2, y2]) => {
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        });
+        ctx.restore();
+      };
+      drawLeg(-12, 18, 0.04);
+      drawLeg(12, 18, -0.05);
+
+      // 3. Bulu Ekor Melengkung Panjang (Sickle Feathers Iridescent Hijau-Ungu)
+      ctx.save();
+      ctx.translate(-26, -4 + breath * 0.5);
+      const tailSway = Math.sin(time * 2.4) * 0.04;
+      ctx.rotate(tailSway);
+      const tailPlumes = [
+        { cp1x: -36, cp1y: -58, cp2x: -74, cp2y: -48, ex: -68, ey: -10, w: 12, c1: "#064e3b", c2: "#020617" },
+        { cp1x: -42, cp1y: -46, cp2x: -82, cp2y: -26, ex: -76, ey: 10, w: 13, c1: "#312e81", c2: "#090d16" },
+        { cp1x: -38, cp1y: -30, cp2x: -76, cp2y: -4, ex: -66, ey: 24, w: 11, c1: "#0f172a", c2: "#020617" },
+        { cp1x: -30, cp1y: -18, cp2x: -62, cp2y: 12, ex: -52, ey: 32, w: 10, c1: "#065f46", c2: "#020617" }
+      ];
+      tailPlumes.forEach((p) => {
+        const tGrad = ctx.createLinearGradient(0, 0, p.ex, p.ey);
+        tGrad.addColorStop(0, "#090d16");
+        tGrad.addColorStop(0.55, p.c1);
+        tGrad.addColorStop(1, p.c2);
+        ctx.fillStyle = tGrad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(p.cp1x, p.cp1y, p.cp2x, p.cp2y, p.ex, p.ey);
+        ctx.bezierCurveTo(p.cp2x + 12, p.cp2y + 10, p.cp1x + 8, p.cp1y + 12, -2, 10);
+        ctx.closePath();
+        ctx.fill();
+
+        // Batang bulu (rachis) berkilau
+        ctx.strokeStyle = "rgba(52, 211, 153, 0.28)";
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(-2, 4);
+        ctx.quadraticCurveTo(p.cp1x * 0.8, p.cp1y * 0.8, p.ex + 4, p.ey - 4);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      // 4. Badan Ayam Jantan Berotot & Berbulu Lebat
+      ctx.save();
+      ctx.translate(0, breath * 0.6);
+      drawShadedEllipse(ctx, -2, 2, 36, 30, -0.18, [
+        [0, "#334155"],
+        [0.35, "#0f172a"],
+        [0.75, "#090d16"],
+        [1, "#020617"]
+      ]);
+      // Kilau iridescent pada punggung & dada
+      drawShadedEllipse(ctx, -6, -10, 24, 12, -0.25, [
+        [0, "rgba(16, 185, 129, 0.24)"],
+        [0.6, "rgba(99, 102, 241, 0.12)"],
+        [1, "rgba(0, 0, 0, 0)"]
+      ]);
+      // Lapisan bulu dada (hackle & breast feathers)
+      drawHairStrands(ctx, 2, 2, 32, 25, 65, "#475569", 0.35, 8);
+
+      // Sayap Berlapis Bulu Primer & Sekunder
+      ctx.save();
+      ctx.translate(-4, 2);
+      ctx.rotate(-0.12 + (mood === "laugh" ? Math.sin(time * 14) * 0.14 : 0));
+      drawShadedEllipse(ctx, 0, 0, 24, 15, 0.15, [
+        [0, "#1e293b"],
+        [0.5, "#090d16"],
+        [1, "#020617"]
+      ]);
+      // Garis bulu sayap realistis
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.22)";
+      ctx.lineWidth = 1.3;
+      for (let wi = -10; wi <= 10; wi += 5) {
+        ctx.beginPath();
+        ctx.moveTo(-14, wi * 0.5);
+        ctx.quadraticCurveTo(0, wi * 0.7 + 4, 18, wi * 0.6);
+        ctx.stroke();
+      }
+      ctx.restore();
+      ctx.restore();
+
+      // 5. Leher Berbulu Runcing (Hackle Feathers) & Kepala
+      ctx.save();
+      ctx.translate(16, -24 + headBob);
+      ctx.rotate(headTilt);
+
+      // Leher berbulu lebat
+      drawShadedEllipse(ctx, -4, 4, 18, 24, -0.22, [
+        [0, "#334155"],
+        [0.45, "#0f172a"],
+        [1, "#020617"]
+      ]);
+      drawHairStrands(ctx, -4, 4, 15, 20, 36, "#64748b", 0.4, 9);
+
+      // Kepala
+      drawShadedEllipse(ctx, 4, -22, 18, 16, 0, [
+        [0, "#334155"],
+        [0.5, "#0f172a"],
+        [1, "#020617"]
+      ]);
+
+      // Jengger Merah Bertekstur Alami (Single Comb 5 Gerigi)
+      const combGrad = ctx.createLinearGradient(0, -52, 0, -32);
+      combGrad.addColorStop(0, "#f87171");
+      combGrad.addColorStop(0.45, "#dc2626");
+      combGrad.addColorStop(1, "#7f1d1d");
+      ctx.fillStyle = combGrad;
+      ctx.beginPath();
+      ctx.moveTo(-12, -33);
+      ctx.bezierCurveTo(-15, -46, -8, -50, -5, -40);
+      ctx.bezierCurveTo(-3, -53, 4, -53, 5, -40);
+      ctx.bezierCurveTo(8, -54, 15, -52, 14, -39);
+      ctx.bezierCurveTo(18, -49, 24, -45, 19, -33);
+      ctx.closePath();
+      ctx.fill();
+      // Bintik tekstur organik pada jengger
+      ctx.fillStyle = "rgba(254, 202, 202, 0.35)";
+      ctx.beginPath();
+      ctx.arc(-1, -43, 1.5, 0, Math.PI * 2);
+      ctx.arc(7, -44, 1.7, 0, Math.PI * 2);
+      ctx.arc(14, -41, 1.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cuping Telinga Putih-Merah Muda & Pial Merah di Bawah Paruh
+      drawShadedEllipse(ctx, -3, -17, 4.5, 5.5, 0, [
+        [0, "#ffffff"],
+        [1, "#cbd5e1"]
+      ]);
+      drawShadedEllipse(ctx, 14, -8, 6, 10, 0.1, [
+        [0, "#ef4444"],
+        [0.7, "#b91c1c"],
+        [1, "#7f1d1d"]
+      ]);
+
+      // Paruh Keratin Kuning-Tanduk Realistis
+      const beakGrad = ctx.createLinearGradient(18, -26, 40, -16);
+      beakGrad.addColorStop(0, "#fef08a");
+      beakGrad.addColorStop(0.5, "#eab308");
+      beakGrad.addColorStop(1, "#a16207");
+      ctx.fillStyle = beakGrad;
+      // Paruh atas melengkung tajam
+      ctx.beginPath();
+      ctx.moveTo(18, -25);
+      ctx.quadraticCurveTo(32, -26, 41, -18);
+      ctx.lineTo(18, -18);
+      ctx.closePath();
+      ctx.fill();
+      // Lubang hidung kecil
+      ctx.fillStyle = "#713f12";
+      ctx.beginPath();
+      ctx.ellipse(23, -22, 1.8, 0.9, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Paruh bawah (terbuka saat tertawa atau berbicara)
+      const jawOpen = mood === "laugh" ? 5 : 0;
+      ctx.fillStyle = "#ca8a04";
+      ctx.beginPath();
+      ctx.moveTo(18, -18);
+      ctx.lineTo(36, -17 + jawOpen);
+      ctx.lineTo(18, -13 + jawOpen * 0.6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Mata Burung Realistis (Iris Jingga-Cokelat + Pupil Hitam + Catchlight Tajam)
+      const isBlinking = Math.sin(time * 1.7) > 0.97;
+      if (mood === "laugh") {
+        ctx.strokeStyle = "#f8fafc";
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.arc(8, -22, 5, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+      } else if (isBlinking) {
+        ctx.strokeStyle = "#64748b";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(3, -22);
+        ctx.lineTo(13, -22);
+        ctx.stroke();
+      } else {
+        // Iris jingga keemasan alami ayam
+        drawShadedEllipse(ctx, 8, -22, 5.5, 5.5, 0, [
+          [0, "#fbbf24"],
+          [0.7, "#d97706"],
+          [1, "#78350f"]
+        ]);
+        // Pupil hitam
+        ctx.fillStyle = "#020617";
+        ctx.beginPath();
+        ctx.arc(8.5, -22, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+        // Catchlight pantulan langit
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(9.8, -23.5, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Alis ekspresi sedih / menyesal
+      if (mood === "sad") {
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(3, -28);
+        ctx.lineTo(13, -30);
+        ctx.stroke();
+        // Tetes air mata kecil
+        ctx.fillStyle = "rgba(125, 211, 252, 0.85)";
+        ctx.beginPath();
+        ctx.arc(12, -14, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore(); // Tutup kepala
+
+      // 6. Properti Realistis Saat Bekerja / Teladan (Sapu Lidi / Botol Tumbler)
+      if (mood === "work") {
+        ctx.save();
+        ctx.translate(18, 4);
+        ctx.rotate(-0.35 + Math.sin(time * 6) * 0.16);
+        // Gagang kayu bambu
+        ctx.strokeStyle = "#92400e";
+        ctx.lineWidth = 4.5;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(0, -35);
+        ctx.lineTo(18, 45);
+        ctx.stroke();
+        // Ikatan sapu lidi
+        ctx.fillStyle = "#1e293b";
+        ctx.fillRect(12, 34, 10, 6);
+        ctx.strokeStyle = "#b45309";
+        ctx.lineWidth = 1.6;
+        for (let si = -8; si <= 8; si += 3) {
+          ctx.beginPath();
+          ctx.moveTo(17, 40);
+          ctx.lineTo(22 + si, 64);
+          ctx.stroke();
+        }
+        ctx.restore();
+      } else if (mood === "proud") {
+        // Tumbler stainless ramah lingkungan
+        ctx.save();
+        ctx.translate(28, 6);
+        const tGrad = ctx.createLinearGradient(-7, -14, 7, 14);
+        tGrad.addColorStop(0, "#0284c7");
+        tGrad.addColorStop(0.5, "#38bdf8");
+        tGrad.addColorStop(1, "#0369a1");
+        ctx.fillStyle = tGrad;
+        ctx.beginPath();
+        ctx.roundRect(-7, -14, 14, 28, 4);
+        ctx.fill();
+        ctx.fillStyle = "#e2e8f0";
+        ctx.fillRect(-5, -18, 10, 4);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    /**
+     * RENDER KELINCI PUTIH SUNGGUHAN (PHOTOREALISTIC WHITE RABBIT)
+     * Bulu putih lembut bertekstur halus, telinga panjang dengan cahaya tembus
+     * pembuluh darah merah muda, hidung bergerak halus, mata gelap berkilau.
+     */
+    function renderRealisticRabbit(ctx, x, y, scale, time, mood = "happy", flip = false) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(flip ? -scale : scale, scale);
+
+      const breath = Math.sin(time * 3.5 + 1) * 1.4;
+      const earTwitch = Math.sin(time * 2.8) * 0.05;
+      const noseTwitch = Math.sin(time * 9) * 0.8;
+
+      // 1. Contact Shadow Realistis
+      const shadowGrad = ctx.createRadialGradient(0, 66, 4, 0, 66, 52);
+      shadowGrad.addColorStop(0, "rgba(15, 23, 42, 0.42)");
+      shadowGrad.addColorStop(0.65, "rgba(15, 23, 42, 0.16)");
+      shadowGrad.addColorStop(1, "rgba(15, 23, 42, 0)");
+      ctx.fillStyle = shadowGrad;
+      ctx.beginPath();
+      ctx.ellipse(0, 66, 52, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Ekor Kapas Bulat Lembut (Fluffy Cottontail)
+      drawShadedEllipse(ctx, -28, 36, 13, 12, 0, [
+        [0, "#ffffff"],
+        [0.7, "#f1f5f9"],
+        [1, "#cbd5e1"]
+      ]);
+      drawHairStrands(ctx, -28, 36, 12, 11, 28, "#94a3b8", 0.3, 5);
+
+      // 3. Kaki Belakang & Kaki Depan Kelinci Berbulu
+      drawShadedEllipse(ctx, -12, 56, 17, 8, -0.05, [
+        [0, "#ffffff"],
+        [0.7, "#e2e8f0"],
+        [1, "#94a3b8"]
+      ]);
+      drawShadedEllipse(ctx, 14, 58, 15, 7, 0.05, [
+        [0, "#ffffff"],
+        [0.7, "#e2e8f0"],
+        [1, "#94a3b8"]
+      ]);
+
+      // 4. Badan Kelinci Putih Menggemaskan & Berbulu Halus
+      ctx.save();
+      ctx.translate(0, breath * 0.5);
+      drawShadedEllipse(ctx, -4, 24, 29, 34, -0.1, [
+        [0, "#ffffff"],
+        [0.55, "#f8fafc"],
+        [0.85, "#e2e8f0"],
+        [1, "#cbd5e1"]
+      ]);
+      // Tekstur bulu lembut di seluruh tubuh
+      drawHairStrands(ctx, -4, 24, 27, 31, 75, "#94a3b8", 0.25, 6);
+
+      // Kaki depan kanan & kiri
+      drawShadedEllipse(ctx, 14, 34, 8, 18, -0.18, [
+        [0, "#ffffff"],
+        [0.8, "#e2e8f0"],
+        [1, "#cbd5e1"]
+      ]);
+      if (mood === "advise") {
+        // Kaki depan terangkat ramah memberi isyarat
+        drawShadedEllipse(ctx, 25, 16, 15, 7, -0.45, [
+          [0, "#ffffff"],
+          [0.8, "#e2e8f0"],
+          [1, "#cbd5e1"]
+        ]);
+      } else {
+        drawShadedEllipse(ctx, 20, 36, 8, 17, -0.25, [
+          [0, "#ffffff"],
+          [0.8, "#e2e8f0"],
+          [1, "#cbd5e1"]
+        ]);
+      }
+      ctx.restore();
+
+      // 5. Kepala & Telinga Panjang Transparan Tembus Cahaya Matahari
+      ctx.save();
+      ctx.translate(10, -14 + breath * 0.7);
+
+      // Telinga Belakang
+      ctx.save();
+      ctx.translate(-8, -16);
+      ctx.rotate(-0.22 - earTwitch);
+      drawShadedEllipse(ctx, 0, -28, 9, 32, 0, [
+        [0, "#ffffff"],
+        [0.85, "#e2e8f0"],
+        [1, "#cbd5e1"]
+      ]);
+      // Bagian dalam telinga merah muda hangat (subsurface scattering)
+      drawShadedEllipse(ctx, 1, -27, 4.8, 24, 0, [
+        [0, "#fbcfe8"],
+        [0.6, "#f472b6"],
+        [1, "#ec4899"]
+      ]);
+      ctx.restore();
+
+      // Telinga Depan
+      ctx.save();
+      ctx.translate(2, -16);
+      ctx.rotate(-0.04 + earTwitch);
+      drawShadedEllipse(ctx, 0, -29, 9.5, 33, 0, [
+        [0, "#ffffff"],
+        [0.85, "#f1f5f9"],
+        [1, "#cbd5e1"]
+      ]);
+      drawShadedEllipse(ctx, 1.5, -28, 5, 25, 0, [
+        [0, "#fce7f3"],
+        [0.6, "#f9a8d4"],
+        [1, "#f472b6"]
+      ]);
+      // Pembuluh darah tipis halus di dalam telinga
+      ctx.strokeStyle = "rgba(225, 29, 72, 0.25)";
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(1.5, -8);
+      ctx.lineTo(1.5, -44);
+      ctx.moveTo(1.5, -24);
+      ctx.lineTo(4, -34);
+      ctx.stroke();
+      ctx.restore();
+
+      // Kepala & Pipi Bulat Berbulu Lembut
+      drawShadedEllipse(ctx, 4, -2, 22, 19, 0.06, [
+        [0, "#ffffff"],
+        [0.65, "#f8fafc"],
+        [0.9, "#e2e8f0"],
+        [1, "#cbd5e1"]
+      ]);
+      // Moncong pipi (muzzle)
+      drawShadedEllipse(ctx, 19, 4, 10, 8.5, 0, [
+        [0, "#ffffff"],
+        [0.85, "#f1f5f9"],
+        [1, "#cbd5e1"]
+      ]);
+      drawHairStrands(ctx, 4, -2, 20, 17, 45, "#94a3b8", 0.24, 5);
+
+      // Mata Kelinci Besar Berkilau Realistis
+      const isBlinking = Math.sin(time * 1.9 + 1.2) > 0.975;
+      if (isBlinking) {
+        ctx.strokeStyle = "#64748b";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(8, -5);
+        ctx.lineTo(17, -5);
+        ctx.stroke();
+      } else {
+        drawShadedEllipse(ctx, 13, -5, 5.8, 6.2, -0.08, [
+          [0, "#451a03"],
+          [0.6, "#1e1b18"],
+          [1, "#020617"]
+        ]);
+        // Catchlight ganda tajam (langit + pantulan rumput)
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(14.5, -7, 1.9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+        ctx.beginPath();
+        ctx.arc(11.5, -3.5, 0.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Alis sedih saat sekolah banjir
+      if (mood === "sad") {
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(8, -12);
+        ctx.lineTo(17, -14);
+        ctx.stroke();
+      }
+
+      // Hidung Merah Muda Bergerak Halus
+      ctx.fillStyle = "#f472b6";
+      ctx.beginPath();
+      ctx.ellipse(27, 2 + noseTwitch * 0.4, 3.2, 2.3, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mulut Kelinci (Y-shape alami)
+      ctx.strokeStyle = "#64748b";
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(27, 4.5);
+      ctx.lineTo(27, 7.5);
+      if (mood === "sad") {
+        ctx.quadraticCurveTo(23, 6.5, 20, 8.5);
+      } else {
+        ctx.quadraticCurveTo(23, 9.5, 20, 7.5);
+      }
+      ctx.stroke();
+
+      // Kumis Kelinci Putih Transparan Halus
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.lineWidth = 1;
+      [
+        [23, 4, 41, 1],
+        [23, 6, 42, 6],
+        [22, 8, 39, 11]
+      ].forEach(([wx1, wy1, wx2, wy2]) => {
+        ctx.beginPath();
+        ctx.moveTo(wx1, wy1);
+        ctx.lineTo(wx2, wy2);
+        ctx.stroke();
+      });
+
+      ctx.restore(); // Tutup kepala
+
+      // Properti Kantong Sampah Pilah Saat Gotong Royong
+      if (mood === "work") {
+        ctx.save();
+        ctx.translate(26, 36);
+        const bagGrad = ctx.createLinearGradient(-12, -12, 12, 22);
+        bagGrad.addColorStop(0, "#22c55e");
+        bagGrad.addColorStop(1, "#14532d");
+        ctx.fillStyle = bagGrad;
+        ctx.beginPath();
+        ctx.moveTo(-8, -12);
+        ctx.lineTo(8, -12);
+        ctx.quadraticCurveTo(16, 8, 12, 24);
+        ctx.quadraticCurveTo(0, 28, -12, 24);
+        ctx.quadraticCurveTo(-16, 8, -8, -12);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    /**
+     * RENDER LINGKUNGAN SEKOLAH SMP NEGERI SATU ATAP 3 KALIANDA YANG NYATA
+     * Dilengkapi Gedung Sekolah Khas Indonesia, Paving Block, Pepohonan Rindang,
+     * God Rays, Selokan Drainase Beton, dan Tempat Sampah Terpilah.
+     */
+    function renderPhotorealisticSchoolEnvironment(ctx, W, H, time, opts = {}) {
+      const { isStorm = false, isDirty = false, isFlooded = false } = opts;
+
+      // 1. Langit & Cahaya Atmosferik
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.65);
+      if (isStorm) {
+        skyGrad.addColorStop(0, "#1e293b");
+        skyGrad.addColorStop(0.55, "#475569");
+        skyGrad.addColorStop(1, "#64748b");
+      } else {
+        skyGrad.addColorStop(0, "#0284c7");
+        skyGrad.addColorStop(0.45, "#38bdf8");
+        skyGrad.addColorStop(0.85, "#bae6fd");
+        skyGrad.addColorStop(1, "#fef9c3");
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Matahari & Awan Cumulus Natural
+      if (!isStorm) {
+        const sunGrad = ctx.createRadialGradient(690, 75, 10, 690, 75, 130);
+        sunGrad.addColorStop(0, "rgba(255, 255, 240, 0.95)");
+        sunGrad.addColorStop(0.25, "rgba(254, 240, 138, 0.55)");
+        sunGrad.addColorStop(1, "rgba(254, 240, 138, 0)");
+        ctx.fillStyle = sunGrad;
+        ctx.beginPath();
+        ctx.arc(690, 75, 130, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Awan lembut bergerak pelan
+        const cloudShift = (time * 6) % (W + 250);
+        const drawCloud = (cx, cy, sc) => {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.scale(sc, sc);
+          const cGrad = ctx.createLinearGradient(0, -25, 0, 20);
+          cGrad.addColorStop(0, "rgba(255, 255, 255, 0.92)");
+          cGrad.addColorStop(1, "rgba(226, 232, 240, 0.65)");
+          ctx.fillStyle = cGrad;
+          ctx.beginPath();
+          ctx.arc(0, 0, 24, 0, Math.PI * 2);
+          ctx.arc(26, -6, 30, 0, Math.PI * 2);
+          ctx.arc(54, 2, 22, 0, Math.PI * 2);
+          ctx.arc(-22, 5, 18, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        };
+        drawCloud(((140 + cloudShift) % (W + 200)) - 100, 78, 1);
+        drawCloud(((460 + cloudShift * 0.7) % (W + 200)) - 100, 58, 0.85);
+      } else {
+        // Awan badai gelap berlapis
+        ctx.fillStyle = "rgba(15, 23, 42, 0.78)";
+        for (let ci = 0; ci < 9; ci++) {
+          ctx.beginPath();
+          ctx.arc(ci * 105 + 30, 55 + (ci % 2) * 14, 65, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // 2. Perbukitan Hijau Rajabasa / Kalianda di Kejauhan (Atmospheric Perspective)
+      const hillGrad = ctx.createLinearGradient(0, 210, 0, 325);
+      if (isStorm) {
+        hillGrad.addColorStop(0, "#334155");
+        hillGrad.addColorStop(1, "#1e293b");
+      } else {
+        hillGrad.addColorStop(0, "#4ade80");
+        hillGrad.addColorStop(0.5, "#22c55e");
+        hillGrad.addColorStop(1, "#15803d");
+      }
+      ctx.fillStyle = hillGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, 285);
+      ctx.bezierCurveTo(180, 200, 330, 265, 490, 225);
+      ctx.bezierCurveTo(630, 190, 720, 240, W, 255);
+      ctx.lineTo(W, 335);
+      ctx.lineTo(0, 335);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Gedung Sekolah SMP Negeri Indonesia (Arsitektur Realistis)
+      ctx.save();
+      ctx.translate(135, 142);
+
+      // Bayangan gedung
+      ctx.fillStyle = "rgba(15, 23, 42, 0.2)";
+      ctx.fillRect(18, 178, 494, 10);
+
+      // Dinding bangunan putih krem & lis hijau sekolah
+      const wallGrad = ctx.createLinearGradient(0, 58, 0, 180);
+      wallGrad.addColorStop(0, "#ffffff");
+      wallGrad.addColorStop(0.75, "#f8fafc");
+      wallGrad.addColorStop(1, "#e2e8f0");
+      ctx.fillStyle = wallGrad;
+      ctx.fillRect(20, 58, 490, 122);
+
+      // Lis bawah dinding warna hijau sekolah
+      ctx.fillStyle = "#15803d";
+      ctx.fillRect(20, 148, 490, 32);
+
+      // Pilar teras sekolah
+      ctx.fillStyle = "#cbd5e1";
+      [35, 145, 255, 375, 485].forEach((px) => {
+        ctx.fillRect(px, 58, 10, 122);
+      });
+
+      // Atap Genteng Tanah Liat Terakota Realistis
+      const roofGrad = ctx.createLinearGradient(0, 4, 0, 62);
+      roofGrad.addColorStop(0, "#ea580c");
+      roofGrad.addColorStop(0.55, "#c2410c");
+      roofGrad.addColorStop(1, "#7c2d12");
+      ctx.fillStyle = roofGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, 60);
+      ctx.lineTo(50, 8);
+      ctx.lineTo(480, 8);
+      ctx.lineTo(530, 60);
+      ctx.closePath();
+      ctx.fill();
+
+      // Tekstur garis genteng
+      ctx.strokeStyle = "rgba(67, 20, 7, 0.28)";
+      ctx.lineWidth = 1;
+      for (let ry = 18; ry < 58; ry += 8) {
+        ctx.beginPath();
+        ctx.moveTo(10, ry);
+        ctx.lineTo(520, ry);
+        ctx.stroke();
+      }
+
+      // Papan Nama Sekolah Resmi
+      ctx.fillStyle = "#1e3a8a";
+      ctx.strokeStyle = "#facc15";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(130, 64, 270, 24, 4);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "800 10.5px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("SMP NEGERI SATU ATAP 3 KALIANDA", 265, 80);
+
+      // Jendela Kaca Ruang Kelas dengan Pantulan Langit
+      const winPositions = [58, 102, 168, 212, 282, 326, 398, 442];
+      winPositions.forEach((wx) => {
+        const wGrad = ctx.createLinearGradient(wx, 100, wx + 32, 138);
+        wGrad.addColorStop(0, isStorm ? "#334155" : "#7dd3fc");
+        wGrad.addColorStop(0.5, isStorm ? "#475569" : "#bae6fd");
+        wGrad.addColorStop(1, "#0284c7");
+        ctx.fillStyle = wGrad;
+        ctx.fillRect(wx, 100, 32, 38);
+        ctx.strokeStyle = "#78350f";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(wx, 100, 32, 38);
+      });
+
+      // Tiang Bendera Merah Putih Berkibar Lembut
+      ctx.strokeStyle = "#e2e8f0";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(-26, 16);
+      ctx.lineTo(-26, 182);
+      ctx.stroke();
+      const wave = Math.sin(time * 4) * 2.5;
+      ctx.fillStyle = "#dc2626";
+      ctx.beginPath();
+      ctx.moveTo(-24, 20);
+      ctx.quadraticCurveTo(0, 20 + wave, 24, 22);
+      ctx.lineTo(24, 35);
+      ctx.quadraticCurveTo(0, 33 + wave, -24, 33);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.moveTo(-24, 33);
+      ctx.quadraticCurveTo(0, 33 + wave, 24, 35);
+      ctx.lineTo(24, 48);
+      ctx.quadraticCurveTo(0, 46 + wave, -24, 46);
+      ctx.fill();
+
+      ctx.restore(); // Tutup Gedung Sekolah
+
+      // 4. Halaman Sekolah: Rumput Hijau & Lapangan Paving Block Realistis
+      const groundGrad = ctx.createLinearGradient(0, 318, 0, H);
+      if (isDirty) {
+        groundGrad.addColorStop(0, "#65a30d");
+        groundGrad.addColorStop(0.5, "#4d7c0f");
+        groundGrad.addColorStop(1, "#3f6212");
+      } else {
+        groundGrad.addColorStop(0, "#22c55e");
+        groundGrad.addColorStop(0.45, "#16a34a");
+        groundGrad.addColorStop(1, "#14532d");
+      }
+      ctx.fillStyle = groundGrad;
+      ctx.fillRect(0, 318, W, H - 318);
+
+      // Lapangan Paving Block Perspektif di Tengah Halaman
+      const pavingGrad = ctx.createLinearGradient(0, 320, 0, 458);
+      pavingGrad.addColorStop(0, "#cbd5e1");
+      pavingGrad.addColorStop(0.5, "#94a3b8");
+      pavingGrad.addColorStop(1, "#64748b");
+      ctx.fillStyle = pavingGrad;
+      ctx.beginPath();
+      ctx.moveTo(220, 322);
+      ctx.lineTo(580, 322);
+      ctx.lineTo(690, 456);
+      ctx.lineTo(110, 456);
+      ctx.closePath();
+      ctx.fill();
+
+      // Garis-garis nat paving block halus
+      ctx.strokeStyle = "rgba(30, 41, 59, 0.22)";
+      ctx.lineWidth = 1;
+      for (let py = 336; py < 454; py += 16) {
+        ctx.beginPath();
+        ctx.moveTo(110, py);
+        ctx.lineTo(690, py);
+        ctx.stroke();
+      }
+
+      // 5. Pepohonan Rindang di Kiri & Kanan dengan Tekstur Daun Berlapis
+      const drawRealisticTree = (tx, ty, scaleTree) => {
+        ctx.save();
+        ctx.translate(tx, ty);
+        ctx.scale(scaleTree, scaleTree);
+        // Batang kayu bertekstur
+        const trunkGrad = ctx.createLinearGradient(-12, 0, 12, 0);
+        trunkGrad.addColorStop(0, "#451a03");
+        trunkGrad.addColorStop(0.5, "#78350f");
+        trunkGrad.addColorStop(1, "#290d02");
+        ctx.fillStyle = trunkGrad;
+        ctx.fillRect(-10, -20, 20, 110);
+
+        // Tajuk daun berlapis (gelap di bawah, terang terkena matahari di atas)
+        const foliageClusters = [
+          { x: -28, y: -32, r: 38, c1: "#166534", c2: "#052e16" },
+          { x: 28, y: -30, r: 38, c1: "#15803d", c2: "#052e16" },
+          { x: 0, y: -56, r: 48, c1: isDirty ? "#84cc16" : "#4ade80", c2: "#14532d" },
+          { x: -16, y: -44, r: 34, c1: isDirty ? "#a3e635" : "#22c55e", c2: "#15803d" },
+          { x: 18, y: -46, r: 34, c1: isDirty ? "#84cc16" : "#22c55e", c2: "#166534" }
+        ];
+        foliageClusters.forEach((fc) => {
+          drawShadedEllipse(ctx, fc.x, fc.y, fc.r, fc.r * 0.85, 0, [
+            [0, fc.c1],
+            [1, fc.c2]
+          ]);
+        });
+        ctx.restore();
+      };
+      drawRealisticTree(62, 245, 1.05);
+      drawRealisticTree(738, 242, 1.1);
+
+      // 6. Taman Bunga Tropis di Sisi Halaman
+      const drawFlowerBed = (bx, by, wilted) => {
+        ctx.save();
+        ctx.translate(bx, by);
+        // Pembatas batu taman & tanah gembur
+        ctx.fillStyle = "#57534e";
+        ctx.beginPath();
+        ctx.ellipse(0, 14, 68, 17, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#451a03";
+        ctx.beginPath();
+        ctx.ellipse(0, 12, 62, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        const flowerPalette = wilted ? ["#78350f", "#92400e", "#713f12"] : ["#f43f5e", "#facc15", "#ec4899", "#fb923c"];
+        [-42, -16, 12, 40].forEach((fx, idx) => {
+          const bend = wilted ? 8 : Math.sin(time * 2 + idx) * 1.5;
+          ctx.strokeStyle = "#15803d";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(fx, 10);
+          ctx.quadraticCurveTo(fx + bend * 0.5, -2, fx + bend, -12 + (wilted ? 8 : 0));
+          ctx.stroke();
+
+          ctx.fillStyle = flowerPalette[idx % flowerPalette.length];
+          ctx.beginPath();
+          ctx.arc(fx + bend, -13 + (wilted ? 8 : 0), 7.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#fef08a";
+          ctx.beginPath();
+          ctx.arc(fx + bend, -13 + (wilted ? 8 : 0), 3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
+      };
+      drawFlowerBed(115, 382, isDirty);
+      drawFlowerBed(685, 382, isDirty);
+
+      // 7. Selokan Drainase Beton Realistis di Bagian Depan
+      ctx.fillStyle = "#475569";
+      ctx.fillRect(0, 454, W, 46);
+      ctx.fillStyle = "#94a3b8";
+      ctx.fillRect(0, 454, W, 5);
+
+      const drainWaterGrad = ctx.createLinearGradient(0, 462, 0, 496);
+      if (isDirty || isFlooded) {
+        drainWaterGrad.addColorStop(0, "#78350f");
+        drainWaterGrad.addColorStop(1, "#451a03");
+      } else {
+        drainWaterGrad.addColorStop(0, "#38bdf8");
+        drainWaterGrad.addColorStop(0.5, "#0284c7");
+        drainWaterGrad.addColorStop(1, "#0369a1");
+      }
+      ctx.fillStyle = drainWaterGrad;
+      ctx.fillRect(0, 462, W, 34);
+
+      // Riak aliran air selokan jika bersih
+      if (!isDirty && !isFlooded) {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+        ctx.lineWidth = 1.5;
+        const flowOffset = (time * 45) % 80;
+        for (let wx = -80 + flowOffset; wx < W; wx += 80) {
+          ctx.beginPath();
+          ctx.moveTo(wx, 474);
+          ctx.quadraticCurveTo(wx + 20, 470, wx + 40, 474);
+          ctx.stroke();
+        }
+      }
+
+      // 8. God Rays (Sinar Matahari Menembus Pepohonan Saat Cerah)
+      if (!isStorm && !isDirty) {
+        ctx.save();
+        const rayGrad = ctx.createLinearGradient(680, 60, 260, 420);
+        rayGrad.addColorStop(0, "rgba(254, 249, 195, 0.24)");
+        rayGrad.addColorStop(1, "rgba(254, 249, 195, 0)");
+        ctx.fillStyle = rayGrad;
+        ctx.beginPath();
+        ctx.moveTo(650, 50);
+        ctx.lineTo(740, 90);
+        ctx.lineTo(390, 440);
+        ctx.lineTo(180, 440);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Helper: Render Sepasang Tempat Sampah Terpilah 3D Realistis
+    function renderRealisticTrashBins(ctx, x, y, scale = 1) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+
+      // Bayangan tempat sampah
+      ctx.fillStyle = "rgba(15, 23, 42, 0.3)";
+      ctx.beginPath();
+      ctx.ellipse(0, 12, 56, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      const drawBin = (bx, cLight, cMid, cDark, label, sub) => {
+        const bGrad = ctx.createLinearGradient(bx - 21, 0, bx + 21, 0);
+        bGrad.addColorStop(0, cLight);
+        bGrad.addColorStop(0.5, cMid);
+        bGrad.addColorStop(1, cDark);
+        ctx.fillStyle = bGrad;
+        ctx.beginPath();
+        ctx.roundRect(bx - 21, -46, 42, 56, 5);
+        ctx.fill();
+
+        // Tutup melengkung
+        ctx.fillStyle = cDark;
+        ctx.beginPath();
+        ctx.roundRect(bx - 23, -53, 46, 9, 4);
+        ctx.fill();
+
+        // Label putih kontras
+        ctx.fillStyle = "rgba(255,255,255,0.92)";
+        ctx.fillRect(bx - 18, -22, 36, 16);
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "800 6.5px 'Plus Jakarta Sans', sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(label, bx, -14);
+        ctx.font = "600 5.5px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(sub, bx, -8);
+      };
+
+      drawBin(-26, "#4ade80", "#16a34a", "#14532d", "ORGANIK", "Daun & Sisa");
+      drawBin(26, "#fde047", "#eab308", "#854d0e", "ANORGANIK", "Plastik/Kaleng");
+      ctx.restore();
+    }
+
+    // Helper: Render Sampah Realistis Berserakan di Halaman & Selokan
+    function renderRealisticTrashClutter(ctx) {
+      const debris = [
+        { x: 165, y: 382, rot: -0.3, type: "bottle" },
+        { x: 245, y: 412, rot: 0.4, type: "wrapper" },
+        { x: 325, y: 374, rot: 0.2, type: "cup" },
+        { x: 475, y: 396, rot: -0.35, type: "wrapper" },
+        { x: 555, y: 418, rot: 0.5, type: "bottle" },
+        { x: 615, y: 376, rot: -0.2, type: "cup" },
+        // Menyumbat selokan drainase
+        { x: 210, y: 475, rot: 0.15, type: "wrapper" },
+        { x: 375, y: 478, rot: -0.1, type: "bottle" },
+        { x: 515, y: 474, rot: 0.2, type: "cup" }
+      ];
+      debris.forEach((d) => {
+        ctx.save();
+        ctx.translate(d.x, d.y);
+        ctx.rotate(d.rot);
+        if (d.type === "bottle") {
+          ctx.fillStyle = "rgba(186, 230, 253, 0.85)";
+          ctx.strokeStyle = "#0284c7";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.roundRect(-11, -5, 22, 10, 3);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = "#2563eb";
+          ctx.fillRect(11, -3, 4, 6);
+        } else if (d.type === "wrapper") {
+          ctx.fillStyle = "#ef4444";
+          ctx.beginPath();
+          ctx.roundRect(-12, -7, 24, 14, 2);
+          ctx.fill();
+          ctx.fillStyle = "#facc15";
+          ctx.fillRect(-7, -3, 14, 6);
+        } else {
+          ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+          ctx.beginPath();
+          ctx.moveTo(-7, -8);
+          ctx.lineTo(7, -8);
+          ctx.lineTo(5, 8);
+          ctx.lineTo(-5, 8);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#ec4899";
+          ctx.fillRect(-6, -2, 12, 4);
+        }
+        ctx.restore();
+      });
+    }
+
+    // Helper: Balon Dialog Sinematik Halus
+    function renderSpeechBubble(ctx, cx, cy, lines, borderColor = "#0284c7", bgColor = "rgba(255,255,255,0.95)") {
+      ctx.save();
+      const boxW = 235;
+      const boxH = lines.length * 16 + 18;
+      ctx.shadowColor = "rgba(15, 23, 42, 0.2)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = bgColor;
+      ctx.strokeStyle = borderColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(cx - boxW / 2, cy - boxH / 2, boxW, boxH, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "700 11px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      lines.forEach((line, i) => {
+        ctx.fillText(line, cx, cy - boxH / 2 + 18 + i * 16);
+      });
+      ctx.restore();
+    }
+
+    /**
+     * RENDER ADEGAN LENGKAP PER HALAMAN PADA CANVAS FOTOREALISTIK
+     */
+    function drawSceneFrame(canvas, scene, time) {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const targetW = Math.max(400, Math.round(rect.width * dpr));
+      const targetH = Math.max(250, Math.round(rect.height * dpr));
+
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+      }
+
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      // Skala koordinat virtual 800x500 agar responsif penuh tanpa distorsi
+      const scaleX = canvas.width / 800;
+      const scaleY = canvas.height / 500;
+      ctx.scale(scaleX, scaleY);
+
+      switch (scene) {
+        case "cover":
+        case "beautiful_school":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 610, 355, 0.92);
+          renderRealisticRooster(ctx, 325, 378, 1.18, time, "happy", false);
+          renderRealisticRabbit(ctx, 465, 380, 1.15, time, "happy", true);
+          break;
+
+        case "littering":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          // Stan Kantin Sekolah Indonesia Realistis
+          ctx.save();
+          ctx.translate(42, 245);
+          ctx.fillStyle = "#fef3c7";
+          ctx.fillRect(0, 35, 145, 92);
+          ctx.fillStyle = "#b91c1c";
+          ctx.beginPath();
+          ctx.moveTo(-8, 38);
+          ctx.lineTo(72, 6);
+          ctx.lineTo(153, 38);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#facc15";
+          ctx.fillRect(25, 18, 95, 17);
+          ctx.fillStyle = "#451a03";
+          ctx.font = "800 9.5px 'Plus Jakarta Sans', sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("KANTIN SEKOLAH", 72, 30);
+          ctx.restore();
+
+          renderRealisticTrashBins(ctx, 625, 358, 1.0);
+          renderRealisticRooster(ctx, 340, 378, 1.15, time, "happy", false);
+          // Bungkus plastik jatuh ke paving
+          ctx.save();
+          ctx.translate(428, 412 + Math.sin(time * 4) * 2);
+          ctx.rotate(0.35);
+          ctx.fillStyle = "#ef4444";
+          ctx.beginPath();
+          ctx.roundRect(-14, -8, 28, 16, 3);
+          ctx.fill();
+          ctx.fillStyle = "#facc15";
+          ctx.fillRect(-8, -3, 16, 6);
+          ctx.restore();
+          break;
+
+        case "advising":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 645, 358, 0.95);
+          // Bungkus sampah di tanah
+          ctx.save();
+          ctx.translate(390, 425);
+          ctx.rotate(0.2);
+          ctx.fillStyle = "#ef4444";
+          ctx.fillRect(-13, -7, 26, 14);
+          ctx.restore();
+
+          renderRealisticRooster(ctx, 290, 378, 1.15, time, "laugh", false);
+          renderRealisticRabbit(ctx, 495, 380, 1.15, time, "advise", true);
+          renderSpeechBubble(ctx, 265, 245, ["“Haha, cuma satu bungkus", "kecil kok, Kelinci!”"], "#eab308", "#fefce8");
+          renderSpeechBubble(ctx, 520, 235, ["“Buang sampahnya ke tempat", "sampah ya, Ayam Hitam!”"], "#0284c7", "#f0f9ff");
+          break;
+
+        case "dirty_school":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: true });
+          renderRealisticTrashClutter(ctx);
+          renderRealisticRooster(ctx, 310, 382, 1.08, time, "sad", false);
+          renderRealisticRabbit(ctx, 480, 382, 1.08, time, "sad", true);
+          break;
+
+        case "flood_rain":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: true, isDirty: true, isFlooded: true });
+          renderRealisticTrashClutter(ctx);
+
+          // Genangan banjir berlumpur dengan pantulan cahaya riak air
+          const floodGrad = ctx.createRadialGradient(400, 412, 30, 400, 412, 360);
+          floodGrad.addColorStop(0, "rgba(14, 116, 144, 0.78)");
+          floodGrad.addColorStop(0.65, "rgba(51, 65, 85, 0.72)");
+          floodGrad.addColorStop(1, "rgba(30, 41, 59, 0.25)");
+          ctx.fillStyle = floodGrad;
+          ctx.beginPath();
+          ctx.ellipse(400, 415, 365, 56, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Riak lingkaran air hujan jatuh ke genangan
+          ctx.strokeStyle = "rgba(186, 230, 253, 0.5)";
+          ctx.lineWidth = 1.3;
+          for (let ri = 0; ri < 5; ri++) {
+            const rProgress = ((time * 1.4 + ri * 0.22) % 1);
+            ctx.globalAlpha = 1 - rProgress;
+            ctx.beginPath();
+            ctx.ellipse(220 + ri * 95, 412 + (ri % 2) * 14, 6 + rProgress * 28, 2 + rProgress * 8, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+
+          renderRealisticRooster(ctx, 300, 372, 1.08, time, "sad", false);
+          renderRealisticRabbit(ctx, 490, 375, 1.08, time, "sad", true);
+
+          // Tetesan Hujan Deras Sinematik
+          ctx.strokeStyle = "rgba(224, 242, 254, 0.65)";
+          ctx.lineWidth = 1.6;
+          for (let drop = 0; drop < 55; drop++) {
+            const dx = ((drop * 67 + time * 180) % 840) - 20;
+            const dy = ((drop * 43 + time * 520) % 480);
+            ctx.beginPath();
+            ctx.moveTo(dx, dy);
+            ctx.lineTo(dx - 8, dy + 22);
+            ctx.stroke();
+          }
+          break;
+
+        case "regret":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: true, isFlooded: true });
+          ctx.fillStyle = "rgba(14, 116, 144, 0.52)";
+          ctx.beginPath();
+          ctx.ellipse(400, 420, 320, 44, 0, 0, Math.PI * 2);
+          ctx.fill();
+          renderRealisticTrashClutter(ctx);
+          renderRealisticRooster(ctx, 395, 372, 1.22, time, "sad", false);
+          renderSpeechBubble(ctx, 395, 232, ["“Maafkan aku... kebiasaan", "kecilku merugikan semua.”"], "#64748b", "#ffffff");
+          break;
+
+        case "invitation":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: true });
+          renderRealisticTrashBins(ctx, 645, 358, 0.95);
+          renderRealisticRooster(ctx, 320, 378, 1.15, time, "sad", false);
+          renderRealisticRabbit(ctx, 455, 380, 1.15, time, "advise", true);
+          renderSpeechBubble(ctx, 470, 235, ["“Jangan sedih, Ayam Hitam!", "Ayo kita selamatkan sekolah!”"], "#10b981", "#ecfdf5");
+          break;
+
+        case "sorting_game":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 400, 375, 1.25);
+          renderRealisticRooster(ctx, 225, 382, 1.1, time, "happy", false);
+          renderRealisticRabbit(ctx, 575, 382, 1.1, time, "advise", true);
+          renderSpeechBubble(ctx, 400, 238, ["ORGANIK (Hijau): Daun & Sisa Makanan", "ANORGANIK (Kuning): Plastik & Kaleng"], "#16a34a", "#ffffff");
+          break;
+
+        case "gotong_royong":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 660, 358, 0.95);
+          renderRealisticRooster(ctx, 295, 378, 1.15, time, "work", false);
+          renderRealisticRabbit(ctx, 445, 380, 1.15, time, "work", false);
+          break;
+
+        case "clean_again":
+        case "moral_ending":
+        case "reflection":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 615, 355, 0.95);
+          renderRealisticRooster(ctx, 325, 378, 1.18, time, "happy", false);
+          renderRealisticRabbit(ctx, 465, 380, 1.15, time, "happy", true);
+          break;
+
+        case "role_model":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          renderRealisticTrashBins(ctx, 635, 358, 1.0);
+          renderRealisticRooster(ctx, 320, 378, 1.18, time, "proud", false);
+          renderRealisticRabbit(ctx, 485, 380, 1.15, time, "happy", true);
+          renderSpeechBubble(ctx, 325, 235, ["“Ayo buang sampah sesuai", "jenisnya, teman-teman!”"], "#16a34a", "#ecfdf5");
+          break;
+
+        case "pledge":
+          renderPhotorealisticSchoolEnvironment(ctx, 800, 500, time, { isStorm: false, isDirty: false });
+          // Spanduk Janji Kebersihan di Halaman Sekolah
+          ctx.save();
+          ctx.translate(400, 242);
+          ctx.fillStyle = "#1e3a8a";
+          ctx.strokeStyle = "#facc15";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.roundRect(-180, -26, 360, 48, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = "#facc15";
+          ctx.font = "800 11px 'Plus Jakarta Sans', sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("JANJI SISWA SMPN SATU ATAP 3 KALIANDA", 0, -6);
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "700 10.5px 'Plus Jakarta Sans', sans-serif";
+          ctx.fillText("Disiplin Piket • Kurangi Plastik • Rawat Tanaman", 0, 11);
+          ctx.restore();
+
+          renderRealisticRooster(ctx, 325, 380, 1.15, time, "happy", false);
+          renderRealisticRabbit(ctx, 465, 382, 1.15, time, "happy", true);
+          break;
+      }
+
+      ctx.restore();
+    }
+
+    function startSceneAnimation(sceneName) {
+      if (sceneAnimFrameId) {
+        cancelAnimationFrame(sceneAnimFrameId);
+        sceneAnimFrameId = null;
+      }
+
+      function loop(nowMs) {
+        const canvas = document.getElementById("active-scene-canvas");
+        if (!canvas) return;
+        drawSceneFrame(canvas, sceneName, nowMs * 0.001);
+        sceneAnimFrameId = requestAnimationFrame(loop);
+      }
+      sceneAnimFrameId = requestAnimationFrame(loop);
+    }
+
+    /**
+     * ============================================================================
+     * RENDER HALAMAN STORYBOOK (SAMPUL, CERITA 2-14, REFLEKSI 15)
+     * ============================================================================
+     */
+    function renderCurrentPage() {
+      const stage = document.getElementById("storybook-stage");
+      const page = STORY_PAGES[currentPageIndex];
+
+      // Update indikator navigasi
+      document.getElementById("page-badge").textContent = `Hal ${page.page} / 15`;
+      document.getElementById("mobile-page-num").textContent = page.page;
+      document.getElementById("reading-progress").style.width = `${(page.page / 15) * 100}%`;
+
+      const prevBtn = document.getElementById("btn-prev");
+      const nextBtn = document.getElementById("btn-next");
+      const nextBtnText = document.getElementById("btn-next-text");
+
+      prevBtn.disabled = currentPageIndex === 0;
+      nextBtn.disabled = currentPageIndex === STORY_PAGES.length - 1;
+      nextBtnText.textContent = currentPageIndex === 0 ? "Mulai Baca" : (currentPageIndex === 14 ? "Selesai" : "Berikutnya");
+
+      renderPageDots();
+
+      // 1. HALAMAN SAMPUL (HALAMAN 1)
+      if (page.type === "cover") {
+        stage.innerHTML = `
+          <div class="book-card bg-white rounded-3xl overflow-hidden border-2 border-emerald-200/80 grid grid-cols-1 lg:grid-cols-12">
+            <!-- Ilustrasi Sampul Fotorealistik -->
+            <div class="lg:col-span-7 relative min-h-[270px] sm:min-h-[380px] bg-sky-100 overflow-hidden">
+              <canvas id="active-scene-canvas" class="scene-canvas"></canvas>
+              <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-full text-xs font-extrabold text-emerald-800 shadow-sm border border-emerald-200">
+                ${page.badge}
+              </div>
+            </div>
+
+            <!-- Tipografi Sampul Profesional -->
+            <div class="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-gradient-to-br from-white via-emerald-50/40 to-sky-50/60">
+              <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-extrabold mb-4">
+                  <span>📚</span>
+                  <span>STORYBOOK DIGITAL INTERAKTIF</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl lg:text-[32px] font-bold text-slate-900 leading-tight tracking-tight mb-3">
+                  ${page.title}
+                </h2>
+
+                <p class="text-lg sm:text-xl font-bold text-emerald-700 mb-6">
+                  “${page.subtitle}”
+                </p>
+
+                <div class="space-y-2.5 bg-white/90 p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <div>
+                    <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">Disusun oleh</p>
+                    <p class="text-base font-extrabold text-slate-800">${page.author}</p>
+                  </div>
+                  <div class="border-t border-slate-100 pt-2">
+                    <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">Instansi</p>
+                    <p class="text-sm font-bold text-emerald-700">${page.school}</p>
+                  </div>
+                  <div class="border-t border-slate-100 pt-2">
+                    <p class="text-xs font-medium text-slate-500">${page.target}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button onclick="nextPage()"
+                  class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-base shadow-lg shadow-emerald-600/25 transition transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
+                  <span>Mulai Membaca</span>
+                  <span>🚀</span>
+                </button>
+                <button onclick="toggleNarration()"
+                  class="py-3.5 px-4 rounded-2xl bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold text-sm transition flex items-center justify-center gap-1.5">
+                  <span>🔊</span>
+                  <span>Dengar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        startSceneAnimation("cover");
+        return;
+      }
+
+      // 2. HALAMAN REFLEKSI & TANTANGAN (HALAMAN 15)
+      if (page.type === "reflection") {
+        const completedDaysCount = missionProgress.filter(Boolean).length;
+        stage.innerHTML = `
+          <div class="book-card bg-white rounded-3xl overflow-hidden border border-emerald-200 p-5 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-slate-100">
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold mb-1.5">
+                  ${page.badge}
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">${page.title}</h2>
+              </div>
+              <button onclick="openQuizModal()"
+                class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold text-sm shadow-md hover:opacity-95 transition">
+                🎯 Kerjakan Kuis Akhir
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <!-- Kolom Kiri: 5 Pertanyaan Refleksi Siswa SMP -->
+              <div class="lg:col-span-6 space-y-3.5">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xl">🧠</span>
+                  <h3 class="text-lg font-bold text-slate-800">5 Pertanyaan Refleksi Siswa</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 mb-2">
+                  Diskusikan bersama teman sebangku atau tulis jawabanmu, lalu klik tombol petunjuk untuk mencocokkan pemahamanmu.
+                </p>
+
+                ${page.questions.map((item, idx) => `
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                    <p class="font-bold text-slate-800 text-sm sm:text-base">${item.q}</p>
+                    <textarea rows="2" placeholder="Tulis jawabanmu di sini..."
+                      class="w-full text-sm p-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400"></textarea>
+                    <div class="flex justify-end">
+                      <button onclick="toggleHint(${idx})"
+                        class="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-100/80 px-3 py-1 rounded-lg transition">
+                        ${revealedHints[idx] ? "Sembunyikan Kunci Pembahasan" : "💡 Lihat Kunci Pembahasan"}
+                      </button>
+                    </div>
+                    ${revealedHints[idx] ? `
+                      <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900 font-medium">
+                        <strong>Pembahasan:</strong> ${item.hint}
+                      </div>
+                    ` : ""}
+                  </div>
+                `).join("")}
+              </div>
+
+              <!-- Kolom Kanan: Tantangan "MISI 7 HARI SEKOLAH BERSIH" -->
+              <div class="lg:col-span-6 flex flex-col justify-between bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50 p-5 sm:p-6 rounded-3xl border-2 border-emerald-200">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                    <span class="px-3 py-1 rounded-full bg-amber-400 text-amber-950 text-xs font-extrabold">
+                      🏆 TANTANGAN KARAKTER
+                    </span>
+                    <span class="text-xs font-extrabold text-emerald-800 bg-white px-3 py-1 rounded-full shadow-sm">
+                      Progres: ${completedDaysCount} / 7 Hari
+                    </span>
+                  </div>
+
+                  <h3 class="text-xl sm:text-2xl font-bold text-emerald-950 mb-1">
+                    MISI 7 HARI SEKOLAH BERSIH
+                  </h3>
+                  <p class="text-xs sm:text-sm text-slate-600 mb-4">
+                    Lakukan satu tindakan nyata menjaga kebersihan sekolah setiap hari selama 7 hari berturut-turut! Centang misi yang sudah kamu lakukan:
+                  </p>
+
+                  <!-- Input Nama Siswa untuk Piagam -->
+                  <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Siswa &amp; Kelas:</label>
+                    <input type="text" value="${studentName}" oninput="studentName = this.value"
+                      placeholder="Contoh: Budi Santoso - Kelas VII A"
+                      class="w-full px-3.5 py-2 rounded-xl border border-emerald-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"/>
+                  </div>
+
+                  <!-- Checklist 7 Hari -->
+                  <div class="space-y-2">
+                    ${page.missionDays.map((m, idx) => `
+                      <label class="flex items-start gap-3 p-3 rounded-2xl bg-white/95 border ${missionProgress[idx] ? 'border-emerald-500 bg-emerald-50/70' : 'border-slate-200'} cursor-pointer hover:border-emerald-400 transition shadow-sm">
+                        <input type="checkbox" ${missionProgress[idx] ? "checked" : ""} onchange="toggleMissionDay(${idx})"
+                          class="mt-1 w-4 h-4 accent-emerald-600 rounded cursor-pointer"/>
+                        <div class="text-xs sm:text-sm">
+                          <span class="font-extrabold text-emerald-800">${m.day}:</span>
+                          <span class="${missionProgress[idx] ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${m.task}</span>
+                        </div>
+                      </label>
+                    `).join("")}
+                  </div>
+                </div>
+
+                <!-- Lencana / Sertifikat Digital -->
+                <div class="mt-5 p-4 rounded-2xl ${completedDaysCount === 7 ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-slate-900 shadow-lg' : 'bg-white/80 text-slate-600 border border-dashed border-emerald-300'} text-center transition-all">
+                  ${completedDaysCount === 7 ? `
+                    <p class="text-xs font-extrabold uppercase tracking-wider">🎖️ LENCANA DUTA LINGKUNGAN SMPN SATAP 3 KALIANDA</p>
+                    <p class="text-base sm:text-lg font-bold mt-1">Selamat, ${studentName || "Pahlawan Lingkungan"}!</p>
+                    <p class="text-xs font-semibold mt-0.5">Kamu telah menuntaskan Misi 7 Hari Sekolah Bersih!</p>
+                  ` : `
+                    <p class="text-xs font-bold">
+                      Centang semua <strong>7 hari misi</strong> di atas untuk membuka Lencana Digital Duta Lingkungan! 🌟
+                    </p>
+                  `}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 3. HALAMAN CERITA REGULER (HALAMAN 2 - 14)
+      stage.innerHTML = `
+        <div class="book-card book-spine-shadow bg-white rounded-3xl overflow-hidden border border-slate-200/90 grid grid-cols-1 lg:grid-cols-12">
+          <!-- Sisi Kiri: Ilustrasi Fotorealistik Besar -->
+          <div class="lg:col-span-7 relative min-h-[250px] sm:min-h-[370px] lg:min-h-[450px] bg-sky-50 overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-100">
+            <canvas id="active-scene-canvas" class="scene-canvas"></canvas>
+            <div class="absolute top-3.5 left-3.5 bg-white/92 backdrop-blur-sm px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-800 shadow-sm border border-slate-200/80">
+              ${page.badge}
+            </div>
+          </div>
+
+          <!-- Sisi Kanan: Narasi Cerita & Interaksi -->
+          <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-white">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                  Halaman ${page.page}
+                </span>
+                <button onclick="toggleNarration()" class="text-xs font-bold text-sky-700 hover:underline flex items-center gap-1">
+                  <span>🔊</span>
+                  <span>Bacakan Halaman Ini</span>
+                </button>
+              </div>
+
+              <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug mb-4">
+                ${page.title}
+              </h2>
+
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                ${page.text}
+              </p>
+
+              ${page.moralQuote ? `
+                <div class="mt-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-lg">
+                  <p class="text-xs uppercase tracking-widest font-bold text-emerald-200 mb-1">Pesan Moral Utama</p>
+                  <p class="text-sm sm:text-base font-extrabold leading-relaxed">
+                    ${page.moralQuote}
+                  </p>
+                </div>
+              ` : ""}
+
+              ${page.interactiveSorting ? renderSortingMiniGame() : ""}
+            </div>
+
+            ${page.moralTag ? `
+              <div class="mt-6 pt-4 border-t border-slate-100">
+                <div class="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs sm:text-sm font-bold text-amber-900">
+                  ${page.moralTag}
+                </div>
+              </div>
+            ` : ""}
+          </div>
+        </div>
+      `;
+      startSceneAnimation(page.scene);
+    }
+
+    /**
+     * MINI-GAME INTERAKTIF MEMILAH SAMPAH (KHUSUS HALAMAN 9)
+     */
+    function renderSortingMiniGame() {
+      const items = [
+        { id: "leaf", name: "Daun Kering", icon: "🍂", type: "organik" },
+        { id: "plastic", name: "Bungkus Jajanan", icon: "🍟", type: "anorganik" },
+        { id: "banana", name: "Kulit Pisang", icon: "🍌", type: "organik" },
+        { id: "bottle", name: "Botol Plastik", icon: "🧴", type: "anorganik" }
+      ];
+      const allDone = Object.values(sortedItems).every(Boolean);
+
+      return `
+        <div class="mt-4 p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-xs font-extrabold text-emerald-900">🎮 Latihan Cepat: Pilah Sampah Sekarang!</p>
+            ${allDone ? `<span class="text-xs font-extrabold text-emerald-700">✅ Semua Benar!</span>` : ""}
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            ${items.map(item => {
+              if (sortedItems[item.id]) {
+                return `
+                  <div class="p-2 rounded-xl bg-white/70 border border-emerald-200 text-xs font-bold text-emerald-700 flex items-center justify-center gap-1.5">
+                    <span>✅</span>
+                    <span>${item.name} (${item.type === "organik" ? "Hijau" : "Kuning"})</span>
+                  </div>
+                `;
+              }
+              return `
+                <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col items-center gap-1.5">
+                  <span class="text-xs font-bold text-slate-800">${item.icon} ${item.name}</span>
+                  <div class="flex gap-1 w-full">
+                    <button onclick="checkSortItem('${item.id}', 'organik', '${item.type}')"
+                      class="flex-1 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold">
+                      Organik
+                    </button>
+                    <button onclick="checkSortItem('${item.id}', 'anorganik', '${item.type}')"
+                      class="flex-1 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-900 text-[10px] font-bold">
+                      Anorganik
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkSortItem(id, chosen, correct) {
+      if (chosen === correct) {
+        sortedItems[id] = true;
+        playChime("success");
+        showToast(`Benar! Sampah masuk ke tempat sampah ${correct.toUpperCase()} 🎉`);
+        renderCurrentPage();
+      } else {
+        playChime("error");
+        showToast("Ups, coba periksa lagi jenis sampahnya ya! 🤔");
+      }
+    }
+
+    /**
+     * ============================================================================
+     * NAVIGASI HALAMAN, DAFTAR ISI & REFLEKSI
+     * ============================================================================
+     */
+    function goToPage(index) {
+      if (index < 0 || index >= STORY_PAGES.length) return;
+      stopNarration();
+      currentPageIndex = index;
+      playChime("page");
+      renderCurrentPage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function nextPage() {
+      if (currentPageIndex < STORY_PAGES.length - 1) {
+        goToPage(currentPageIndex + 1);
+      }
+    }
+
+    function prevPage() {
+      if (currentPageIndex > 0) {
+        goToPage(currentPageIndex - 1);
+      }
+    }
+
+    function renderPageDots() {
+      const container = document.getElementById("page-dots");
+      container.innerHTML = STORY_PAGES.map((p, idx) => `
+        <button onclick="goToPage(${idx})" title="Halaman ${p.page}: ${p.title}"
+          class="h-2.5 rounded-full transition-all ${idx === currentPageIndex ? 'w-7 bg-emerald-600' : 'w-2.5 bg-slate-300 hover:bg-emerald-400'}">
+        </button>
+      `).join("");
+    }
+
+    function toggleHint(idx) {
+      revealedHints[idx] = !revealedHints[idx];
+      renderCurrentPage();
+    }
+
+    function toggleMissionDay(idx) {
+      missionProgress[idx] = !missionProgress[idx];
+      if (missionProgress[idx]) {
+        playChime("success");
+      }
+      renderCurrentPage();
+    }
+
+    // Modal Daftar Isi
+    function openTocModal() {
+      const modal = document.getElementById("toc-modal");
+      const list = document.getElementById("toc-list");
+      list.innerHTML = STORY_PAGES.map((p, idx) => `
+        <button onclick="goToPage(${idx}); closeTocModal();"
+          class="text-left p-3 rounded-2xl border ${idx === currentPageIndex ? 'bg-emerald-50 border-emerald-500' : 'bg-slate-50 hover:bg-emerald-50/50 border-slate-200'} transition flex items-center gap-3">
+          <span class="w-8 h-8 rounded-xl ${idx === currentPageIndex ? 'bg-emerald-600 text-white' : 'bg-white text-slate-700 border border-slate-200'} font-extrabold text-xs flex items-center justify-center shrink-0">
+            ${p.page}
+          </span>
+          <div class="min-w-0">
+            <p class="text-[10px] font-bold text-emerald-700 uppercase">${p.badge}</p>
+            <p class="text-sm font-bold text-slate-800 truncate">${p.title}</p>
+          </div>
+        </button>
+      `).join("");
+      modal.classList.remove("hidden");
+    }
+
+    function closeTocModal() {
+      document.getElementById("toc-modal").classList.add("hidden");
+    }
+
+    /**
+     * ============================================================================
+     * MODAL KUIS INTERAKTIF
+     * ============================================================================
+     */
+    function openQuizModal() {
+      renderQuizContent();
+      document.getElementById("quiz-modal").classList.remove("hidden");
+    }
+
+    function closeQuizModal() {
+      document.getElementById("quiz-modal").classList.add("hidden");
+    }
+
+    function selectQuizOption(qIdx, optIdx) {
+      if (quizSubmitted) return;
+      quizAnswers[qIdx] = optIdx;
+      renderQuizContent();
+    }
+
+    function submitQuiz() {
+      if (Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length) {
+        showToast("Silakan jawab semua 5 pertanyaan terlebih dahulu ya!");
+        return;
+      }
+      quizSubmitted = true;
+      playChime("success");
+      renderQuizContent();
+    }
+
+    function resetQuiz() {
+      quizAnswers = {};
+      quizSubmitted = false;
+      renderQuizContent();
+    }
+
+    function renderQuizContent() {
+      const container = document.getElementById("quiz-content");
+      let score = 0;
+      if (quizSubmitted) {
+        QUIZ_QUESTIONS.forEach((q, idx) => {
+          if (quizAnswers[idx] === q.correct) score += 20;
+        });
+      }
+
+      container.innerHTML = `
+        ${quizSubmitted ? `
+          <div class="mb-6 p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-center shadow-md">
+            <p class="text-xs uppercase tracking-widest font-bold text-emerald-100">Hasil Kuis Pemahaman Cerita</p>
+            <p class="text-4xl font-extrabold my-1">Nilai: ${score} / 100</p>
+            <p class="text-sm font-medium">
+              ${score >= 80 ? "Luar biasa! Kamu sangat memahami pesan menjaga kebersihan sekolah! 🌟" : "Bagus! Yuk baca kembali ceritanya agar semakin paham! 💪"}
+            </p>
+          </div>
+        ` : ""}
+
+        <div class="space-y-5">
+          ${QUIZ_QUESTIONS.map((q, qIdx) => `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <p class="font-bold text-slate-900 text-sm sm:text-base mb-3">${qIdx + 1}. ${q.question}</p>
+              <div class="space-y-2">
+                ${q.options.map((opt, optIdx) => {
+                  const isSelected = quizAnswers[qIdx] === optIdx;
+                  let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
+                  if (quizSubmitted) {
+                    if (optIdx === q.correct) {
+                      btnStyle = "bg-emerald-100 border-emerald-500 text-emerald-950 font-bold";
+                    } else if (isSelected && optIdx !== q.correct) {
+                      btnStyle = "bg-rose-100 border-rose-500 text-rose-950";
+                    }
+                  } else if (isSelected) {
+                    btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-950 font-bold";
+                  }
+
+                  return `
+                    <button onclick="selectQuizOption(${qIdx}, ${optIdx})"
+                      class="w-full text-left p-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-between ${btnStyle}">
+                      <span>${String.fromCharCode(65 + optIdx)}. ${opt}</span>
+                      ${quizSubmitted && optIdx === q.correct ? "<span>✅</span>" : ""}
+                      ${quizSubmitted && isSelected && optIdx !== q.correct ? "<span>❌</span>" : ""}
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+              ${quizSubmitted ? `
+                <p class="mt-2.5 text-xs text-slate-600 bg-white p-2.5 rounded-xl border border-slate-200">
+                  <strong>Penjelasan:</strong> ${q.explanation}
+                </p>
+              ` : ""}
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="mt-6 flex justify-end gap-3">
+          ${quizSubmitted ? `
+            <button onclick="resetQuiz()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-sm">
+              Ulangi Kuis
+            </button>
+          ` : `
+            <button onclick="submitQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-extrabold text-sm shadow-md">
+              Periksa Jawaban
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    /**
+     * TOAST NOTIFIKASI HALUS
+     */
+    let toastTimer = null;
+    function showToast(msg) {
+      const box = document.getElementById("toast-box");
+      const text = document.getElementById("toast-msg");
+      text.textContent = msg;
+      box.classList.remove("opacity-0");
+      box.classList.add("opacity-100");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.remove("opacity-100");
+        box.classList.add("opacity-0");
+      }, 2800);
+    }
+
+    // Dukungan Navigasi Keyboard (Panah Kiri & Kanan)
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.key === "ArrowRight") nextPage();
+      if (e.key === "ArrowLeft") prevPage();
+    });
+
+    // Inisialisasi Halaman Pertama saat Dokumen Dimuat
+    window.onload = function () {
+      renderCurrentPage();
+    };
+  </script>
+</body>
+</html>
